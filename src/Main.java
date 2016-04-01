@@ -88,13 +88,21 @@ public class Main extends Application{
 	bordPane.setBottom(bottomMenu);
 	bordPane.setCenter(centerMenu);
 	bordPane.setRight(rightMenu);
-	AnchorPane Anchor = new AnchorPane();
 	
+	//First Page
+	AnchorPane Anchor = new AnchorPane();
+	StackPane SP = new StackPane();
+	Label lab2 = new Label("Welcome");
+	Label lab3 = new Label("to");
+	Label lab4 = new Label("Dulce Tapioca!");
+	SP.getChildren().addAll(lab2, lab3, lab4);
+	Anchor.getChildren().addAll(SP);
+	Anchor.setStyle("-fx-background-color: #B09268");
 	
 	
 	Scene first = new Scene(Anchor, 1360, 900);
 	Scene scene1 = new Scene(bordPane,1360,900);
-	window.setScene(scene1);
+	window.setScene(first);
 	window.show();	
 	}
 }
