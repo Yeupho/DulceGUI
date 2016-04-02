@@ -1,3 +1,7 @@
+/*Link to MENU GUI design here:
+ * http://www.pdf-archive.com/2016/04/02/drawing1/drawing1.pdf
+ * Is a rough draft though, not final. */
+
 import com.sun.javafx.geom.Rectangle;
 
 import javafx.application.Application;
@@ -118,7 +122,8 @@ public class Main extends Application{
  * -
  * */
 	
-	
+/*==================WINDOW DISPLAY=================
+ * This sets up the scenes and shows the windows. */
 	Scene first = new Scene(Anchor, 1360, 900);
 	Scene scene1 = new Scene(bordPane,1360,900);
 	window.setScene(first);
