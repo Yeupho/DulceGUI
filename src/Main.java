@@ -1,22 +1,18 @@
-/*Link to MENU GUI design here:
- * http://www.pdf-archive.com/2016/04/02/drawing1/drawing1.pdf
- * Is a rough draft though, not final. */
 
-import com.sun.javafx.geom.Rectangle;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -67,7 +63,7 @@ public class Main extends Application{
 	bottomMenu.getChildren().addAll(ButtonA, ButtonB, ButtonC);
 		
 	//Right Menu
-	Image disImg = new Image("tapioca.png");
+	Image disImg = new Image("img/tapioca.png");
 	VBox rightMenu = new VBox();
 	rightMenu.setPadding(new Insets(50, 40, 30, 30));
 	rightMenu.setSpacing(20);
@@ -99,19 +95,30 @@ public class Main extends Application{
 	bordPane.setCenter(centerMenu);
 	bordPane.setRight(rightMenu);
 	
+
 /*=================CUSTOMER FIRST PAGE==================
  * First Page is the Welcome Page for Customers
  * -Displays "WELCOME TO DULCE TAPIOCA and "Began Order" button
  * -Start Button takes User to Customer Second Page*/
-	AnchorPane Anchor = new AnchorPane();
-	StackPane SP = new StackPane();
+	BorderPane Anchor = new BorderPane();
+	VBox inception = new VBox();
+	
 	Label lab2 = new Label("Welcome");
 	Label lab3 = new Label("to");
 	Label lab4 = new Label("Dulce Tapioca!");
 	Button start = new Button("Began Order");
-	SP.getChildren().addAll(lab2, lab3, lab4);
-	Anchor.getChildren().addAll(SP);
+	start.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
+	inception.getChildren().addAll(lab2, lab3, lab4,start);
+	Anchor.setCenter(inception);
+	
+	Pane can1 = new Pane();
+	can1.setPrefSize(100, 100);
+	Anchor.setLeft(can1);
 	Anchor.setStyle("-fx-background-color: #B09268");
+	
+	
+	Scene scene2 = new Scene(bordPane,1360,900);
+	start.setOnAction(e-> window.setScene(scene2));
 	
 /*===================LOGIN PAGE=================
  * Login page will have Username and password
@@ -121,12 +128,39 @@ public class Main extends Application{
  * -"Welcome Page" is used by the Customer, "Employee Page" will be for employees of course. 
  * -
  * */
+	GridPane grid = new GridPane();
+	grid.setPadding(new Insets(10,10,10,10));
+	grid.setVgap(10);
+	grid.setHgap(10);
+	//Name	Label
+	Label userLabel = new Label("Username");
+	GridPane.setConstraints(userLabel, 0, 0);
+	//Name Input
+	TextField userIn = new TextField();
+	userIn.setPromptText("username");
+	GridPane.setConstraints(userIn, 1, 0);
+	
+	//Password Label
+	Label passLabel = new Label("Password");
+	GridPane.setConstraints(passLabel, 0, 1);
+	//Password Input
+	TextField passIn = new TextField();
+	passIn.setPromptText("password");
+	GridPane.setConstraints(passIn, 1, 1);
+	
+	Button logButt = new Button("Login");
+	GridPane.setConstraints(logButt, 1,2);
+	grid.getChildren().addAll(userLabel, userIn, passLabel, passIn, logButt);
+	
+	Scene scene1 = new Scene(Anchor, 1360, 900);
+	logButt.setOnAction(e -> window.setScene(scene1));
 	
 /*==================WINDOW DISPLAY=================
  * This sets up the scenes and shows the windows. */
-	Scene first = new Scene(Anchor, 1360, 900);
-	Scene scene1 = new Scene(bordPane,1360,900);
-	window.setScene(first);
+	Scene logMenu = new Scene(grid, 400, 200);
+	window.setScene(logMenu);
 	window.show();	
 	}
+	
 }
+
