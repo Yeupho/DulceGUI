@@ -31,14 +31,24 @@ public class Main extends Application{
 
 	
 	
-	
+/*=============CUSTOMER SECOND PAGE==============
+ * -Top label asks What type of drink customer would like
+ * -Bottom Menu has option to: Go Back, Cancel, Continue
+ * -Right Menu displays order, plus kawaii image on top
+ * -Center menu displays the Options as buttons
+ * -Once Type of ingredient is clicked, the scene takes you to Third Page
+ * -Third page will be hard because it will have to read from database 
+ * 		FIRST before displaying options, because of what gets picked in
+ * 		SECOND page. 
+ * 
+ * 
+ * */	
 	//Top Menu
 	HBox topMenu = new HBox();
 	Label label1 = new Label("What would you like today?");
 		label1.setPadding(new Insets(30, 30, 30, 30));
 		label1.setStyle("-fx-font: 35 arial; -fx-base: #FFC524");
 	topMenu.getChildren().addAll(label1);
-	
 	
 	//Bottom Menu
 	HBox bottomMenu = new HBox();
@@ -61,9 +71,6 @@ public class Main extends Application{
 	iv.setImage(disImg);
 	rightMenu.getChildren().add(iv);
 
-	
-
-	
 	//Scene 2 Center Menu
 	VBox centerMenu = new VBox();
 	centerMenu.setPadding(new Insets(50, 40, 30, 30));
@@ -80,7 +87,6 @@ public class Main extends Application{
 		ButtonH.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
 	centerMenu.getChildren().addAll(ButtonD, ButtonE, ButtonF, ButtonG, ButtonH);
 		
-	
 	//Second Page	
 	BorderPane bordPane = new BorderPane();
 	bordPane.setStyle("-fx-background-color: #B09268");
@@ -89,15 +95,28 @@ public class Main extends Application{
 	bordPane.setCenter(centerMenu);
 	bordPane.setRight(rightMenu);
 	
-	//First Page
+/*=================CUSTOMER FIRST PAGE==================
+ * First Page is the Welcome Page for Customers
+ * -Displays "WELCOME TO DULCE TAPIOCA and "Began Order" button
+ * -Start Button takes User to Customer Second Page*/
 	AnchorPane Anchor = new AnchorPane();
 	StackPane SP = new StackPane();
 	Label lab2 = new Label("Welcome");
 	Label lab3 = new Label("to");
 	Label lab4 = new Label("Dulce Tapioca!");
+	Button start = new Button("Began Order");
 	SP.getChildren().addAll(lab2, lab3, lab4);
 	Anchor.getChildren().addAll(SP);
 	Anchor.setStyle("-fx-background-color: #B09268");
+	
+/*===================LOGIN PAGE=================
+ * Login page will have Username and password
+ * -Pressing the Login button checks the typed Username and Password, then checks the database for it as well
+ * -Create if-else statement that takes User to either "Welcome Page" or "Employee Page" 
+ * -Once they get to the Welcome Page, there is no turning back without closing the program
+ * -"Welcome Page" is used by the Customer, "Employee Page" will be for employees of course. 
+ * -
+ * */
 	
 	
 	Scene first = new Scene(Anchor, 1360, 900);
