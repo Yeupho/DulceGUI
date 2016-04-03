@@ -1,6 +1,8 @@
 
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -177,38 +179,57 @@ public class Main extends Application{
 	grid.setPadding(new Insets(10,10,10,10));
 	grid.setVgap(10);
 	grid.setHgap(10);
-	//Name	Label
+	//Name	Label, placed in grid 0, 0
 	Label userLabel = new Label("Username");
-	GridPane.setConstraints(userLabel, 0, 0);
-	//Name Input
+	GridPane.setConstraints(userLabel, 0, 1);
+	//Name Input, placed in grid 1, 0
 	TextField userIn = new TextField();
 	userIn.setPromptText("username");
-	GridPane.setConstraints(userIn, 1, 0);
+	GridPane.setConstraints(userIn, 1, 1);
 	
-	//Password Label
+	//Password Label, placed in grid 0, 1
 	Label passLabel = new Label("Password");
-	GridPane.setConstraints(passLabel, 0, 1);
+	GridPane.setConstraints(passLabel, 0, 2);
 	//Password Input
 	TextField passIn = new TextField();
 	passIn.setPromptText("password");
-	GridPane.setConstraints(passIn, 1, 1);
-	
+	GridPane.setConstraints(passIn, 1, 2);
+	//Login Button,
 	Button logButt = new Button("Login");
-	GridPane.setConstraints(logButt, 1,2);
+	GridPane.setConstraints(logButt, 0,4);
 	
 	ImageView iv1 = new ImageView();
 	iv1.setImage(disImg);
-	GridPane.setConstraints(iv1, 1,3);
+	GridPane.setConstraints(iv1, 1,0);
 	
 	Button EmpButt = new Button("Temporary EmpMenuButt");
 	EmpButt.setOnAction(e-> window.setScene(EmpScene));
-	GridPane.setConstraints(EmpButt, 1, 4);
+	GridPane.setConstraints(EmpButt, 1, 5);
 	
 	grid.getChildren().addAll(userLabel, userIn, passLabel, passIn, logButt, iv1, EmpButt);
-
+	
 	Scene scene1 = new Scene(Anchor, 1360, 900);
 /*================================================================================*/
-	logButt.setOnAction(e -> window.setScene(scene1));
+	logButt.setOnAction(new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent e){
+			
+			if ((userIn.getText() != null && userIn.getText().contains("Employee")) && passIn.getText().contains("Employee")) {
+	           window.setScene(EmpScene);
+	        }
+			else if ((userIn.getText() != null && userIn.getText().contains("Customer")) && passIn.getText().contains("Customer")){
+				window.setScene(scene1);
+			}
+			else {
+	        	System.out.println("looololol, try 'Employee' in both fields or 'Customer' in both fields");
+	        	Label youfaildlogin = new Label("*Incorrect Username/Password");
+	        	GridPane.setConstraints(youfaildlogin, 1, 4);
+	        	grid.getChildren().add(youfaildlogin);
+	        }
+
+		}
+		
+	});
 	ButtonA.setOnAction(e-> window.setScene(scene1));
 	//Button B always go back to main menu, NOTE: ADD CONFIRMATION scene to this-
 	ButtonB.setOnAction(e-> window.setScene(scene1));
