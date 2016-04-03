@@ -29,7 +29,19 @@ public class Main extends Application{
 		window = primaryStage;
 		window.setTitle("Dulce Tapioca");
 		
-
+/*=============CUSTOMER THIRD PAGE===============
+ * 
+ * 
+ * 
+ * */
+	BorderPane bord3 = new BorderPane();
+	bord3.setStyle("-fx-background-color: #B09268");
+	HBox topMenu3 = new HBox();
+	HBox bottomMenu3 = new HBox();
+	VBox centerMenu3 = new VBox();
+	VBox rightMenu3 = new VBox();
+	
+	
 	
 	
 /*=============CUSTOMER SECOND PAGE==============
@@ -43,16 +55,27 @@ public class Main extends Application{
  * 		SECOND page. 
  * 
  * 
- * */	
-	//Top Menu
+ * */
+	//Second Page	
+	BorderPane bordPane = new BorderPane();
+	bordPane.setStyle("-fx-background-color: #B09268");
 	HBox topMenu = new HBox();
+	HBox bottomMenu = new HBox();
+	VBox centerMenu = new VBox();
+	VBox rightMenu = new VBox();
+	
+	bordPane.setTop(topMenu);
+	bordPane.setBottom(bottomMenu);
+	bordPane.setCenter(centerMenu);
+	bordPane.setRight(rightMenu);
+	
+	//Top Menu Items
 	Label label1 = new Label("What would you like today?");
 		label1.setPadding(new Insets(30, 30, 30, 30));
 		label1.setStyle("-fx-font: 35 arial; -fx-base: #FFC524");
 	topMenu.getChildren().addAll(label1);
 	
-	//Bottom Menu
-	HBox bottomMenu = new HBox();
+	//Bottom Menu Items	
 	bottomMenu.setPadding(new Insets(30, 30, 30, 30));
 	bottomMenu.setSpacing(30);
 	Button ButtonA = new Button("Go Back");
@@ -63,9 +86,8 @@ public class Main extends Application{
 		ButtonC.setStyle("-fx-font: 35 arial; -fx-base: #7CD674");
 	bottomMenu.getChildren().addAll(ButtonA, ButtonB, ButtonC);
 		
-	//Right Menu
+	//Right Menu Items
 	Image disImg = new Image("img/tapioca.png");
-	VBox rightMenu = new VBox();
 	ImageView iv = new ImageView();
 	iv.setImage(disImg);
 	
@@ -73,8 +95,7 @@ public class Main extends Application{
 	rightMenu.setSpacing(20);
 	rightMenu.getChildren().add(iv);
 
-	//Scene 2 Center Menu
-	VBox centerMenu = new VBox();
+	//Scene 2 Center Menu Items	
 	centerMenu.setPadding(new Insets(50, 40, 30, 30));
 	centerMenu.setSpacing(20);
 	Button ButtonD = new Button("Smoothie");
@@ -89,15 +110,6 @@ public class Main extends Application{
 		ButtonH.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
 	centerMenu.getChildren().addAll(ButtonD, ButtonE, ButtonF, ButtonG, ButtonH);
 		
-	//Second Page	
-	BorderPane bordPane = new BorderPane();
-	bordPane.setStyle("-fx-background-color: #B09268");
-	bordPane.setTop(topMenu);
-	bordPane.setBottom(bottomMenu);
-	bordPane.setCenter(centerMenu);
-	bordPane.setRight(rightMenu);
-	
-
 /*=================CUSTOMER FIRST PAGE==================
  * First Page is the Welcome Page for Customers
  * -Displays "WELCOME TO DULCE TAPIOCA and "Began Order" button
@@ -173,9 +185,9 @@ public class Main extends Application{
 	
 	
 	Scene scene1 = new Scene(Anchor, 1360, 900);
+/*================================================================================*/
 	logButt.setOnAction(e -> window.setScene(scene1));
 	ButtonA.setOnAction(e-> window.setScene(scene1));
-	
 	//Button B always go back to main menu, NOTE: ADD CONFIRMATION scene to this-
 	ButtonB.setOnAction(e-> window.setScene(scene1));
 /*==================WINDOW DISPLAY=================
