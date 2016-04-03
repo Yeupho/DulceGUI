@@ -13,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +31,25 @@ public class Main extends Application{
 		window = primaryStage;
 		window.setTitle("Dulce Tapioca");
 		
+/*@@@@@@@@@@@@EMPLOYEE Main Menu@@@@@@@@@@@@@@@@@@
+ * /
+ */
+	BorderPane empMenu1 = new BorderPane();
+	HBox empMenuV = new HBox();
+	MenuBar menus = new MenuBar();
+	Menu menuFile = new Menu("File");
+	menuFile.setText("File");
+	Menu menuEdit = new Menu("Edit");
+	Menu menuView = new Menu("View");
+	Menu menuHelp = new Menu("Help");
+	
+	menus.getMenus().addAll(menuFile, menuEdit, menuView, menuHelp);
+	empMenu1.setTop(empMenuV);
+	
+	empMenuV.getChildren().addAll(menus);
+
+	Scene EmpScene = new Scene(empMenu1, 1360, 700);
+	
 /*=============CUSTOMER THIRD PAGE===============
  * 
  * 
@@ -179,11 +200,12 @@ public class Main extends Application{
 	iv1.setImage(disImg);
 	GridPane.setConstraints(iv1, 1,3);
 	
+	Button EmpButt = new Button("Temporary EmpMenuButt");
+	EmpButt.setOnAction(e-> window.setScene(EmpScene));
+	GridPane.setConstraints(EmpButt, 1, 4);
 	
-	grid.getChildren().addAll(userLabel, userIn, passLabel, passIn, logButt, iv1);
-	
-	
-	
+	grid.getChildren().addAll(userLabel, userIn, passLabel, passIn, logButt, iv1, EmpButt);
+
 	Scene scene1 = new Scene(Anchor, 1360, 900);
 /*================================================================================*/
 	logButt.setOnAction(e -> window.setScene(scene1));
