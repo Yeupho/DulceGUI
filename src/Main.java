@@ -2,6 +2,7 @@
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -65,10 +66,11 @@ public class Main extends Application{
 	//Right Menu
 	Image disImg = new Image("img/tapioca.png");
 	VBox rightMenu = new VBox();
-	rightMenu.setPadding(new Insets(50, 40, 30, 30));
-	rightMenu.setSpacing(20);
 	ImageView iv = new ImageView();
 	iv.setImage(disImg);
+	
+	rightMenu.setPadding(new Insets(50, 40, 30, 30));
+	rightMenu.setSpacing(20);
 	rightMenu.getChildren().add(iv);
 
 	//Scene 2 Center Menu
@@ -104,8 +106,17 @@ public class Main extends Application{
 	VBox inception = new VBox();
 	
 	Label lab2 = new Label("Welcome");
+	lab2.setPadding(new Insets (10, 10, 10, 10));
+	lab2.setStyle("-fx-font: 40 arial;");
+	
 	Label lab3 = new Label("to");
+	lab3.setPadding(new Insets (10, 10, 10, 10));
+	lab3.setStyle("-fx-font: 40 arial;");
+	
 	Label lab4 = new Label("Dulce Tapioca!");
+	lab4.setPadding(new Insets (10, 10, 10, 10));
+	lab4.setStyle("-fx-font: 40 arial;");
+	
 	Button start = new Button("Began Order");
 	start.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
 	inception.getChildren().addAll(lab2, lab3, lab4,start);
@@ -114,7 +125,8 @@ public class Main extends Application{
 	Pane can1 = new Pane();
 	can1.setPrefSize(100, 100);
 	Anchor.setLeft(can1);
-	Anchor.setStyle("-fx-background-color: #B09268");
+	inception.setAlignment(Pos.CENTER);
+	Anchor.setStyle("");
 	
 	
 	Scene scene2 = new Scene(bordPane,1360,900);
@@ -150,11 +162,22 @@ public class Main extends Application{
 	
 	Button logButt = new Button("Login");
 	GridPane.setConstraints(logButt, 1,2);
-	grid.getChildren().addAll(userLabel, userIn, passLabel, passIn, logButt);
+	
+	ImageView iv1 = new ImageView();
+	iv1.setImage(disImg);
+	GridPane.setConstraints(iv1, 1,3);
+	
+	
+	grid.getChildren().addAll(userLabel, userIn, passLabel, passIn, logButt, iv1);
+	
+	
 	
 	Scene scene1 = new Scene(Anchor, 1360, 900);
 	logButt.setOnAction(e -> window.setScene(scene1));
+	ButtonA.setOnAction(e-> window.setScene(scene1));
 	
+	//Button B always go back to main menu, NOTE: ADD CONFIRMATION scene to this-
+	ButtonB.setOnAction(e-> window.setScene(scene1));
 /*==================WINDOW DISPLAY=================
  * This sets up the scenes and shows the windows. */
 	Scene logMenu = new Scene(grid, 400, 200);
