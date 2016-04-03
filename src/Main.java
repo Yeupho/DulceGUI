@@ -180,7 +180,7 @@ public class Main extends Application{
 	ButtonB.setOnAction(e-> window.setScene(scene1));
 /*==================WINDOW DISPLAY=================
  * This sets up the scenes and shows the windows. */
-	Scene logMenu = new Scene(grid, 400, 200);
+	Scene logMenu = new Scene(grid, 400, 400);
 	window.setScene(logMenu);
 	window.show();	
 	}
