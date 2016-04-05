@@ -153,15 +153,29 @@ public class Main extends Application{
  * /
  */
         BorderPane empMenu1 = new BorderPane();
-        HBox empMenuV = new HBox();
+                //HBox empMenuV = new HBox();
+                HBox empMenuV = new HBox();
         MenuBar menus = new MenuBar();
         Menu menuFile = new Menu("File");
-        menuFile.setText("File");
-        Menu menuEdit = new Menu("Edit");
+        menuFile.getItems().add(new MenuItem("New..."));
+        menuFile.getItems().add(new MenuItem("Refresh"));
+        menuFile.getItems().add(new MenuItem("Properties"));
+        menuFile.getItems().add(new MenuItem("Exit"));
+        Menu menuAdd = new Menu("Add");
+        menuAdd.getItems().add(new MenuItem("Menu Items..."));
+        menuAdd.getItems().add(new MenuItem("Employee..."));
+        menuAdd.getItems().add(new MenuItem("Location..."));
         Menu menuView = new Menu("View");
+        menuView.getItems().add(new MenuItem("Order Reports"));
+        menuView.getItems().add(new MenuItem("Employee Reports"));
+        menuView.getItems().add(new MenuItem("Location Reports"));
         Menu menuHelp = new Menu("Help");
+        menuHelp.getItems().add(new MenuItem("About Team Solar"));
+        menuHelp.getItems().add(new MenuItem("Documentation"));
+        menuHelp.getItems().add(new MenuItem("Report Issues"));
+        menus.getMenus().addAll(menuFile, menuAdd, menuView, menuHelp);
 
-        menus.getMenus().addAll(menuFile, menuEdit, menuView, menuHelp);
+        empMenu1.setTop(menus);
         empMenu1.setTop(empMenuV);
 
         empMenuV.getChildren().addAll(menus);
