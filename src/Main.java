@@ -1,3 +1,5 @@
+package sample;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,16 +9,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.*;
 import javafx.stage.Stage;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Tooltip;
@@ -24,8 +28,10 @@ import javafx.scene.control.RadioButton;
 
 
 
+
 public class Main extends Application{
     Stage window;
+
     public static void main(String[] args){
         launch(args);
     }
@@ -43,6 +49,8 @@ public class Main extends Application{
         grid.setPadding(new Insets(10,10,10,10));
         grid.setVgap(10);
         grid.setHgap(10);
+        grid.setStyle("-fx-background-color: #B09268");
+        grid.setAlignment(Pos.CENTER);
 
 
         /*==================WINDOW DISPLAY=================
@@ -54,9 +62,14 @@ public class Main extends Application{
 
         /*==================SCENE 1 - CUSTOMER FIRST PAGE=================*/
         BorderPane Anchor = new BorderPane();
+
+
         VBox inception = new VBox();
+        inception.setAlignment(Pos.CENTER);
+        inception.setStyle("-fx-background-color: #B09268");
 
         Scene scene1 = new Scene(Anchor, 1360, 900);
+
 
 
         /*==================SCENE 2 - CUSTOMER SECOND PAGE=================*/
@@ -88,6 +101,8 @@ public class Main extends Application{
         bord3.setCenter(centerMenu3);
         bord3.setRight(rightMenu3);
 
+        /*==================Confirmation Box=================*/
+
 
         /*===================LOGIN PAGE=================
  * Login page will have Username and password
@@ -100,6 +115,8 @@ public class Main extends Application{
         //Name	Label, placed in grid 0, 0
         Label userLabel = new Label("Username");
         GridPane.setConstraints(userLabel, 0, 1);
+        userLabel.setStyle("-fx-font: 16.5 arial;");
+
         //Name Input, placed in grid 1, 0
         TextField userIn = new TextField();
         userIn.setPromptText("username");
@@ -107,14 +124,20 @@ public class Main extends Application{
 
         //Password Label, placed in grid 0, 1
         Label passLabel = new Label("Password");
+        passLabel.setStyle("-fx-font: 16.5 arial;");
         GridPane.setConstraints(passLabel, 0, 2);
+
         //Password Input
         TextField passIn = new TextField();
         passIn.setPromptText("password");
         GridPane.setConstraints(passIn, 1, 2);
+
         //Login Button,
         Button logButt = new Button("Login");
-        GridPane.setConstraints(logButt, 0,4);
+        logButt.setStyle("-fx-font: 16.5 arial; -fx-base: #FFC524");
+        logButt.setMinWidth(250);
+        logButt.setAlignment(Pos.CENTER);
+        GridPane.setConstraints(logButt, 1,4);
 
         Image disImg = new Image("tapioca.png");
         ImageView iv1 = new ImageView();
@@ -130,30 +153,18 @@ public class Main extends Application{
  * /
  */
         BorderPane empMenu1 = new BorderPane();
-        //HBox empMenuV = new HBox();
+        HBox empMenuV = new HBox();
         MenuBar menus = new MenuBar();
         Menu menuFile = new Menu("File");
-	        menuFile.getItems().add(new MenuItem("New..."));
-	        menuFile.getItems().add(new MenuItem("Refresh"));
-	        menuFile.getItems().add(new MenuItem("Properties"));
-	        menuFile.getItems().add(new MenuItem("Exit"));
-        Menu menuAdd = new Menu("Add");
-        	menuAdd.getItems().add(new MenuItem("Menu Items..."));
-        	menuAdd.getItems().add(new MenuItem("Employee..."));
-        	menuAdd.getItems().add(new MenuItem("Location..."));
+        menuFile.setText("File");
+        Menu menuEdit = new Menu("Edit");
         Menu menuView = new Menu("View");
-        menuView.getItems().add(new MenuItem("Order Reports"));
-        menuView.getItems().add(new MenuItem("Employee Reports"));
-        menuView.getItems().add(new MenuItem("Location Reports"));
         Menu menuHelp = new Menu("Help");
-	        menuHelp.getItems().add(new MenuItem("About Team Solar"));
-	        menuHelp.getItems().add(new MenuItem("Documentation"));
-	        menuHelp.getItems().add(new MenuItem("Report Issues"));
 
-        menus.getMenus().addAll(menuFile, menuAdd, menuView, menuHelp);
-        empMenu1.setTop(menus);
+        menus.getMenus().addAll(menuFile, menuEdit, menuView, menuHelp);
+        empMenu1.setTop(empMenuV);
 
-       
+        empMenuV.getChildren().addAll(menus);
 
         Scene EmpScene = new Scene(empMenu1, 1360, 700);
 
@@ -169,10 +180,9 @@ public class Main extends Application{
                     window.setScene(scene1);
                 }
                 else {
-                    System.out.println("Bakaaa~!, try 'Employee' in both fields or 'Customer' in both fields");
-                    Label youfaildlogin = new Label("*Incorrect Username/Password");
-                    GridPane.setConstraints(youfaildlogin, 1, 4);
-                    grid.getChildren().add(youfaildlogin);
+                    Okay.display("Incorrect Login", "Please verify your credentials");
+                    System.out.println("looololol, try 'Employee' in both fields or 'Customer' in both fields");
+
                 }
 
             }
@@ -203,7 +213,7 @@ public class Main extends Application{
         Anchor.setCenter(inception);
 
         Pane can1 = new Pane();
-        can1.setPrefSize(100, 100);
+        can1.setPrefSize(0, 100);
         Anchor.setLeft(can1);
         inception.setAlignment(Pos.CENTER);
         Anchor.setStyle("");
@@ -234,15 +244,21 @@ public class Main extends Application{
         //Bottom Menu Items
         bottomMenu.setPadding(new Insets(30, 30, 30, 30));
         bottomMenu.setSpacing(30);
+
         Button ButtonA = new Button("Go Back");
         ButtonA.setStyle("-fx-font: 35 arial; -fx-base: #FFC524");
+        ButtonA.setMinWidth(300);
+        ButtonA.setAlignment(Pos.CENTER);
+
         Button ButtonB = new Button("Cancel Order");
         ButtonB.setStyle("-fx-font: 35 arial; -fx-base: #FFC524");
+        ButtonB.setMinWidth(300);
+        ButtonB.setAlignment(Pos.CENTER);
 
         bottomMenu.getChildren().addAll(ButtonA, ButtonB);
 
         //Right Menu Items
-        ImageView iv2 = new ImageView("tapioca.png");
+        ImageView iv2 = new ImageView();
         iv2.setImage(disImg);
 
         rightMenu.setPadding(new Insets(50, 40, 30, 30));
@@ -255,19 +271,40 @@ public class Main extends Application{
 
         Button ButtonD = new Button("Smoothie");
         ButtonD.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
+        ButtonD.setMinWidth(300);
+        ButtonD.setAlignment(Pos.CENTER);
         ButtonD.setOnAction(e-> window.setScene(scene3));
 
         Button ButtonE = new Button("Tea");
         ButtonE.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
+        ButtonE.setMinWidth(300);
+        ButtonE.setAlignment(Pos.CENTER);
+        ButtonE.setOnAction(e-> {
+            boolean ans = ConfirmOrder.display("Print Order", "Would you like to print your order?");
+
+            if (ans == true) {
+                Okay.display("Order Complete", "Printing Order");
+
+                window.setScene(scene1);
+            } else {
+                window.setScene(scene2);
+            }
+        });
 
         Button ButtonF = new Button("Coffee");
         ButtonF.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
+        ButtonF.setMinWidth(300);
+        ButtonF.setAlignment(Pos.CENTER);
 
         Button ButtonG = new Button("Frio");
         ButtonG.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
+        ButtonG.setMinWidth(300);
+        ButtonG.setAlignment(Pos.CENTER);
 
         Button ButtonH = new Button("Milk Tea");
         ButtonH.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
+        ButtonH.setMinWidth(300);
+        ButtonH.setAlignment(Pos.CENTER);
 
         centerMenu.getChildren().addAll(ButtonD, ButtonE, ButtonF, ButtonG, ButtonH);
 
@@ -293,13 +330,19 @@ public class Main extends Application{
 
         Button ButtonA3 = new Button("Go Back");
         ButtonA3.setStyle("-fx-font: 35 arial; -fx-base: #FFC524");
+        ButtonA3.setMinWidth(300);
+        ButtonA3.setAlignment(Pos.CENTER);
 
         Button ButtonB3 = new Button("Cancel Order");
         ButtonB3.setStyle("-fx-font: 35 arial; -fx-base: #FFC524");
+        ButtonG.setMinWidth(300);
+        ButtonG.setAlignment(Pos.CENTER);
 
 
         Button ButtonC3 = new Button("Continue");
         ButtonC3.setStyle("-fx-font: 35 arial; -fx-base: #7CD674");
+        ButtonC3.setMinWidth(300);
+        ButtonC3.setAlignment(Pos.CENTER);
 
         bottomMenu3.getChildren().addAll(ButtonA3, ButtonB3, ButtonC3);
 
@@ -307,7 +350,7 @@ public class Main extends Application{
         ButtonA3.setOnAction(e-> window.setScene(scene2));
 
         //Right Menu - Image
-        ImageView iv3 = new ImageView("tapioca.png");
+        ImageView iv3 = new ImageView();
         iv3.setImage(disImg);
         rightMenu3.setPadding(new Insets(50, 40, 30, 30));
         rightMenu3.setSpacing(20);
@@ -319,8 +362,11 @@ public class Main extends Application{
         centerMenu3.setSpacing(40);
 
         ChoiceBox cb1 = new ChoiceBox();
+        cb1.getItems().addAll("Smoothies", "Testing", "Is", "Fun", "But", "Smoothies", "Go", "Here");
         cb1.getSelectionModel().selectFirst();
         cb1.setTooltip(new Tooltip("Select your smoothie"));
+        cb1.setMinWidth(300);
+        cb1.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
 
         RadioButton rb1 = new RadioButton("Cold");
         RadioButton rb2 = new RadioButton("Normal");
@@ -331,11 +377,8 @@ public class Main extends Application{
         ButtonD3.setOnAction(e-> window.setScene(scene3));
 
         centerMenu3.getChildren().addAll(cb1, rb1, rb2, rb3);
-
     }
 
 }
-
-
 
 
