@@ -6,27 +6,14 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.*;
 import javafx.stage.Stage;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Tooltip;
-import javafx.scene.control.RadioButton;
 
-
+import javax.swing.*;
 
 
 public class Main extends Application{
@@ -89,20 +76,29 @@ public class Main extends Application{
         /*==================SCENE 3 - SMOOTHIES=================*/
         BorderPane bord3 = new BorderPane();
         bord3.setStyle("-fx-background-color: #B09268");
+
         HBox topMenu3 = new HBox();
         HBox bottomMenu3 = new HBox();
-        VBox centerMenu3 = new VBox();
+        //VBox centerMenu3 = new VBox();
         VBox rightMenu3 = new VBox();
+
+        FlowPane smoothFlow = new FlowPane();
+        smoothFlow.setPadding(new Insets(10, 30, 10, 0));
+        smoothFlow.setVgap(4);
+        smoothFlow.setHgap(4);
+        smoothFlow.setAlignment(Pos.TOP_CENTER);
+        smoothFlow.setPrefWrapLength(200);
+        smoothFlow.setStyle("-fx-font: 20 arial; -fx-base: #FFC524");
 
         Scene scene3 = new Scene(bord3,1360,900);
 
         bord3.setTop(topMenu3);
         bord3.setBottom(bottomMenu3);
-        bord3.setCenter(centerMenu3);
+        bord3.setCenter(smoothFlow);
         bord3.setRight(rightMenu3);
 
         /*==================Confirmation Box=================*/
-
+        // Refer to ConfirmOrder class
 
         /*===================LOGIN PAGE=================
  * Login page will have Username and password
@@ -128,8 +124,11 @@ public class Main extends Application{
         GridPane.setConstraints(passLabel, 0, 2);
 
         //Password Input
-        TextField passIn = new TextField();
+       /* TextField passIn = new TextField();
+        passIn.setPromptText("password"); */
+        PasswordField passIn = new PasswordField();
         passIn.setPromptText("password");
+
         GridPane.setConstraints(passIn, 1, 2);
 
         //Login Button,
@@ -194,7 +193,7 @@ public class Main extends Application{
                     window.setScene(scene1);
                 }
                 else {
-                    Okay.display("Incorrect Login", "Please verify your credentials");
+                    Okay.display("Incorrect Login", "Bakaaaaa~~~ Please verify your credentials");
                     System.out.println("looololol, try 'Employee' in both fields or 'Customer' in both fields");
 
                 }
@@ -333,7 +332,7 @@ public class Main extends Application{
  *
  * */
         //Top Menu Items
-        Label lab1 = new Label("Please select how you would like your smoothie.");
+        Label lab1 = new Label("What flavor would you like?");
         lab1.setPadding(new Insets(30, 30, 30, 30));
         lab1.setStyle("-fx-font: 35 arial; -fx-base: #FFC524");
         topMenu3.getChildren().addAll(lab1);
@@ -372,8 +371,80 @@ public class Main extends Application{
 
 
         //Scene 2 Center Menu Items
-        centerMenu3.setPadding(new Insets(50, 40, 30, 30));
-        centerMenu3.setSpacing(40);
+
+        Button flavorFlave = new Button ("Poop");
+        flavorFlave.setMinWidth(300);
+        flavorFlave.setAlignment(Pos.CENTER);
+        flavorFlave.setMinHeight(150);
+
+        Button flavorFlave2 = new Button("More Poop");
+        flavorFlave2.setMinWidth(300);
+        flavorFlave2.setAlignment(Pos.CENTER);
+        flavorFlave2.setMinHeight(150);
+
+        Button flavor3 = new Button("Even More Poop");
+        flavor3.setMinWidth(300);
+        flavor3.setAlignment(Pos.CENTER);
+        flavor3.setMinHeight(150);
+
+        Button sf4 = new Button("Fresh Avocado");
+        sf4.setMinWidth(300);
+        sf4.setAlignment(Pos.CENTER);
+        sf4.setMinHeight(150);
+
+        Button sf5 = new Button("Fresh Strawberry");
+        sf5.setMinWidth(300);
+        sf5.setAlignment(Pos.CENTER);
+        sf5.setMinHeight(150);
+
+        Button sf6 = new Button("Fresh Mango");
+        sf6.setMinWidth(300);
+        sf6.setAlignment(Pos.CENTER);
+        sf6.setMinHeight(150);
+
+        Button sf7 = new Button("Fresh Banana");
+        sf7.setMinWidth(300);
+        sf7.setAlignment(Pos.CENTER);
+        sf7.setMinHeight(150);
+
+        Button sf8 = new Button("Fresh Poop");
+        sf8.setMinWidth (300);
+        sf8.setAlignment(Pos.CENTER);
+        sf8.setMinHeight(150);
+
+        Button sf9 = new Button("Fresh Raspberry");
+        sf9.setMinWidth(300);
+        sf9.setAlignment(Pos.CENTER);
+        sf9.setMinHeight(150);
+
+        Button sf10 = new Button("Fresh Raspberry");
+        sf10.setMinWidth(300);
+        sf10.setAlignment(Pos.CENTER);
+        sf10.setMinHeight(150);
+
+        Button sf11 = new Button("Fresh Raspberry");
+        sf11.setMinWidth(300);
+        sf11.setAlignment(Pos.CENTER);
+        sf11.setMinHeight(150);
+
+        Button sf12 = new Button("Fresh Raspberry");
+        sf12.setMinWidth(300);
+        sf12.setAlignment(Pos.CENTER);
+        sf12.setMinHeight(150);
+
+        smoothFlow.getChildren().addAll(flavorFlave, flavorFlave2, flavor3, sf4, sf5, sf6, sf7, sf8, sf9, sf10, sf11,
+                sf12);
+
+        //centerMenu3.getChildren().addAll(cb1, temp1, rb1, rb2, rb3);
+    }
+
+}
+
+
+/******************* THIS SPOT IS RESERVERED FOR USEFUL JUNK ***********************/
+/*
+  centerMenu3.setPadding(new Insets(50, 40, 30, 30));
+        centerMenu3.setSpacing(10);
 
         ChoiceBox cb1 = new ChoiceBox();
         cb1.getItems().addAll("Smoothies", "Testing", "Is", "Fun", "But", "Smoothies", "Go", "Here");
@@ -382,17 +453,11 @@ public class Main extends Application{
         cb1.setMinWidth(300);
         cb1.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
 
+        Label temp1 = new Label("Temperature");
+        temp1.setPadding(new Insets(40, 10, 40, 10));
+        temp1.setStyle("-fx-font: 35 arial; -fx-base: #FFC524");
+
         RadioButton rb1 = new RadioButton("Cold");
         RadioButton rb2 = new RadioButton("Normal");
-        RadioButton rb3 = new RadioButton("Hot");
-
-        Button ButtonD3 = new Button("Smoothie");
-        ButtonD3.setStyle("-fx-font: 30 arial; -fx-base: #FFC524");
-        ButtonD3.setOnAction(e-> window.setScene(scene3));
-
-        centerMenu3.getChildren().addAll(cb1, rb1, rb2, rb3);
-    }
-
-}
-
+        RadioButton rb3 = new RadioButton("Hot");*/
 
