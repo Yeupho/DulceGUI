@@ -6,7 +6,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,12 +17,37 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.*;
 
 public class Main extends Application{
     Stage window;
 
     public static void main(String[] args){
+    	try{
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			String url = "jdbc:sqlserver://localhost:1433;databaseName=DulceDatabase;integratedSecurity=true";
+			String user ="";
+			String pass ="";
+			
+		
+			Connection conn = DriverManager.getConnection(url, user, pass);
+			Statement stmt = conn.createStatement();
+			String SQL = "SELECT * FROM City";
+			ResultSet rs = stmt.executeQuery(SQL);
+			rs.next();
+			String first = rs.getString("CityName");
+			System.out.println(first);
+			System.out.println("Connection Success, PARTY!");
+			
+			
+		}
+		catch(Exception exc){
+			System.out.println("You failed connection");
+		}
         launch(args);
     }
 
@@ -139,7 +166,7 @@ public class Main extends Application{
         logButt.setAlignment(Pos.CENTER);
         GridPane.setConstraints(logButt, 1,4);
 
-        Image disImg = new Image("tapioca.png");
+        Image disImg = new Image("img/tapioca.png");
         ImageView iv1 = new ImageView();
         iv1.setImage(disImg);
         GridPane.setConstraints(iv1, 1,0);
@@ -159,8 +186,12 @@ public class Main extends Application{
  * The tree list is a quick and simple navigation 
 */     
         MenuBar menus = new MenuBar();
-        menus.setStyle("-fx-background-color: #b9d3eee;" );
-        menus.setStyle("-fx-font-size:30");
+        menus.setStyle(
+        		"-fx-background-color: #b78345;"
+        		+ "-fx-font-size:30;"
+        		+ "-fx-stroke: black;"
+        		+ "-fx-stroke-width: 3;"
+        		+ "-fx-text-fill: white;");
         Menu menuFile = new Menu("File");
         MenuItem menFNew = new MenuItem("New...");
         MenuItem menFRef = new MenuItem("Refresh");
@@ -176,8 +207,9 @@ public class Main extends Application{
         menuAdd.getItems().addAll(menAEmployee, menAItems, menALocation);
         
         menAEmployee.setOnAction(e-> AddEmployee.display());
-        menFLogout.setOnAction(e-> window.setScene(logMenu));
         menAItems.setOnAction(e-> AddEmployee.displayOrder());
+        menALocation.setOnAction(e-> AddEmployee.displayLocation());
+        menFLogout.setOnAction(e-> window.setScene(logMenu));
         
         
         Menu menuView = new Menu("View");
@@ -192,8 +224,8 @@ public class Main extends Application{
         menuHelp.getItems().add(new MenuItem("Documentation"));
         menuHelp.getItems().add(new MenuItem());
         menus.getMenus().addAll(menuFile, menuAdd, menuView, menuHelp);
-        
-        TreeView<String> tree;
+        /*============================TREES=======================*/
+       /* TreeView<String> tree;
         TreeItem<String> MainRoot = new TreeItem<>("Root");
         MainRoot.setExpanded(false);
         
@@ -219,17 +251,159 @@ public class Main extends Application{
         secC.getChildren().addAll(subF, subG, subH);
         tree = new TreeView<>(MainRoot);
         tree.setShowRoot(false);
+        tree.setMaxWidth(150);
+        tree.setMaxHeight(300);*/
+ 
+/*==============================Employee Center Display=======================================*/
+        VBox EmpFlow = new VBox();
+        EmpFlow.setStyle("-fx-background-color: #B09268");
+        Label EmpFlow1a = new Label("Orders");
+        Label EmpFlow2a = new Label("Employees");
+        Label EmpFlow3a = new Label("Location");
+        EmpFlow1a.setStyle("-fx-font-size:20; -fx-padding: 10, 0, 0, 0;");
+        EmpFlow2a.setStyle("-fx-font-size:20; -fx-padding: 10, 0, 0, 0;");
+        EmpFlow3a.setStyle("-fx-font-size:20; -fx-padding: 10, 0, 0, 0;");
+        
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(3.0);
+        dropShadow.setOffsetY(3.0);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+        
+        FlowPane EmpFlow1 = new FlowPane();
+        EmpFlow1.setStyle("-fx-background-color: #B09268");
+        EmpFlow1.setVgap(20);
+        EmpFlow1.setHgap(20);
+        EmpFlow1.setPrefWrapLength(800);
+        EmpFlow1.setPadding(new Insets(20,0,0,20));
+        FlowPane EmpFlow2 = new FlowPane();
+        EmpFlow2.setStyle("-fx-background-color: #B09268");
+        EmpFlow2.setVgap(20);
+        EmpFlow2.setHgap(20);
+        EmpFlow2.setPrefWrapLength(800);
+        EmpFlow2.setPadding(new Insets(20,0,0,20));
+        FlowPane EmpFlow3 = new FlowPane();
+        EmpFlow3.setStyle("-fx-background-color: #B09268");
+        EmpFlow3.setVgap(20);
+        EmpFlow3.setHgap(20);
+        EmpFlow3.setPrefWrapLength(800);
+        EmpFlow3.setPadding(new Insets(20,0,0,20));
+        
+        Button ButtVOrd = new Button("View Order");
+        ButtVOrd.setEffect(dropShadow);
+        ButtVOrd.setMinSize(200, 100);
+        ButtVOrd.setMaxSize(200, 100);
+        ButtVOrd.setPadding(new Insets(30, 20 , 30, 20));
+        ButtVOrd.setStyle(""
+        		+ "-fx-font-size: 20px;"
+        		+ "-fx-border-radius: 50; "
+        		+ "-fx-background-radius: 50; "
+        		+ "-fx-background-color: #DECC8C");
+        Button ButtVEmp = new Button("View Employee Report");
+        ButtVEmp.setEffect(dropShadow);
+        ButtVEmp.setMinSize(200, 100);
+        ButtVEmp.setMaxSize(200, 100);
+        ButtVEmp.setPadding(new Insets(30, 20 , 30, 20));
+        ButtVEmp.setStyle(""
+        		+ "-fx-font-size: 14px;"
+        		+ "-fx-border-radius: 50; "
+        		+ "-fx-background-radius: 50; "
+        		+ "-fx-background-color: #F28A99");
+        Button ButtVLoc = new Button("View Location Report");
+        ButtVLoc.setEffect(dropShadow);
+        ButtVLoc.setMinSize(200, 100);
+        ButtVLoc.setMaxSize(200, 100);
+        ButtVLoc.setPadding(new Insets(30, 20 , 30, 20));
+        ButtVLoc.setStyle(""
+        		+ "-fx-font-size: 14px;"
+        		+ "-fx-border-radius: 50; "
+        		+ "-fx-background-radius: 50; "
+        		+ "-fx-background-color: #D0B040");
+        Button ButtAddIngr = new Button("Add Ingredient");
+        ButtAddIngr.setEffect(dropShadow);
+        ButtAddIngr.setMinSize(200, 100);
+        ButtAddIngr.setMaxSize(200, 100);
+        ButtAddIngr.setPadding(new Insets(30, 20 , 30, 20));
+        ButtAddIngr.setStyle(""
+        		+ "-fx-font-size: 20px;"
+        		+ "-fx-border-radius: 50; "
+        		+ "-fx-background-radius: 50; "
+        		+ "-fx-background-color: #DE986D");
+        Button ButtAddemp = new Button("Add Employee");
+        ButtAddemp.setEffect(dropShadow);
+        ButtAddemp.setMinSize(200, 100);
+        ButtAddemp.setMaxSize(200, 100);
+        ButtAddemp.setPadding(new Insets(30, 20 , 30, 20));
+        ButtAddemp.setOnAction(e-> AddEmployee.display());
+        ButtAddemp.setStyle(""
+        		+ "-fx-font-size: 20px;"
+        		+ "-fx-border-radius: 50; "
+        		+ "-fx-background-radius: 50; "
+        		+ "-fx-background-color: #AB6890");
+        Button ButtAddLoc = new Button("Add Location");
+        ButtAddLoc.setEffect(dropShadow);
+        ButtAddLoc.setMinSize(200, 100);
+        ButtAddLoc.setMaxSize(200, 100);
+        ButtAddLoc.setPadding(new Insets(30, 20 , 30, 20));
+        ButtAddLoc.setOnAction(e-> AddEmployee.displayLocation());
+        ButtAddLoc.setStyle(""
+        		+ "-fx-font-size: 20px;"
+        		+ "-fx-border-radius: 50; "
+        		+ "-fx-background-radius: 50; "
+        		+ "-fx-background-color: #68AB9F");
+        Button ButtEditIngr = new Button("Edit Ingredient");
+        ButtEditIngr.setEffect(dropShadow);
+        ButtEditIngr.setMinSize(200, 100);
+        ButtEditIngr.setMaxSize(200, 100);
+        ButtEditIngr.setPadding(new Insets(30, 20 , 30, 20));
+        ButtEditIngr.setStyle(""
+        		+ "-fx-font-size: 20px;"
+        		+ "-fx-border-radius: 50; "
+        		+ "-fx-background-radius: 50; "
+        		+ "-fx-background-color: #7096AE");
+        Button ButtUpEmp = new Button("Update Employee");
+        ButtUpEmp.setEffect(dropShadow);
+        ButtUpEmp.setMinSize(200, 100);
+        ButtUpEmp.setMaxSize(200, 100);
+        ButtUpEmp.setPadding(new Insets(30, 20 , 30, 20));
+        ButtUpEmp.setStyle(""
+        		+ "-fx-font-size: 20px;"
+        		+ "-fx-border-radius: 50; "
+        		+ "-fx-background-radius: 50; "
+        		+ "-fx-background-color: #DAA9B5");
+        Button ButtUpLoc = new Button("Update Location");
+        ButtUpLoc.setEffect(dropShadow);
+        ButtUpLoc.setMinSize(200, 100);
+        ButtUpLoc.setMaxSize(200, 100);
+        ButtUpLoc.setPadding(new Insets(30, 20 , 30, 20));
+        ButtUpLoc.setStyle(""
+        		+ "-fx-font-size: 20px;"
+        		+ "-fx-border-radius: 50; "
+        		+ "-fx-background-radius: 50; "
+        		+ "-fx-background-color: #AFE197");
         
         
+        EmpFlow1.getChildren().addAll(ButtVOrd, ButtAddIngr, ButtEditIngr);
+        EmpFlow2.getChildren().addAll(ButtVEmp, ButtAddemp, ButtUpEmp);
+        EmpFlow3.getChildren().addAll(ButtVLoc, ButtAddLoc, ButtUpLoc);
+        EmpFlow.getChildren().addAll(EmpFlow1a, EmpFlow1, EmpFlow2a, EmpFlow2, EmpFlow3a, EmpFlow3);
 /*@@@@@@@@@@@@@@@@@@@@EMPLYOEE Main Page @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  * First page of the Employee GUI, contains List to add data, edit data, display form, display reports */        
         
         BorderPane empMenu1 = new BorderPane();
+        VBox EmpLeftSet = new VBox();  
+        EmpLeftSet.setStyle("-fx-background-color: #B09268");
+        Image disImg1 = new Image("img/tapioca.png");
+        ImageView iv12 = new ImageView();
+        iv12.setImage(disImg1);
+        EmpLeftSet.getChildren().add(iv12);
         empMenu1.setTop(menus);
-        empMenu1.setLeft(tree);
-        Scene EmpScene = new Scene(empMenu1, 1360, 700);
+        empMenu1.setLeft(EmpLeftSet);
+        empMenu1.setCenter(EmpFlow);
+        Scene EmpScene = new Scene(empMenu1, 1100, 700);
         
-/*@@@@@@@@@@@@@@@@@@@Employee Add Employee Page*/
+
+
        
         
         

@@ -97,4 +97,46 @@ public class AddEmployee {
 		 window.showAndWait();
 		
 	}
+	public static void displayLocation(){
+		Stage window = new Stage();
+		window.setTitle("Add Ingredient");
+		window.initModality(Modality.APPLICATION_MODAL);
+		BorderPane ord_Addord = new BorderPane();
+		 VBox VBoxAddOrd = new VBox();
+	     VBoxAddOrd.setPadding(new Insets(20,20,20,20));
+		 		 
+		Label Text = new Label("Add New Ingredient");
+		Text.setStyle("-fx-font-size: 40;");
+		Text.setPadding(new Insets(30,30,30,30));
+		Label IngrName = new Label("Ingredient Name");
+        TextField Da = new TextField();
+        
+        Label IngrType = new Label("Ingredient Type");
+        combobox = new ComboBox<>();
+        combobox.getItems().addAll(
+        		"Cold Cafe", 
+        		"Frios",
+        		"Hot Cafe", 
+        		"Juiced Tea",      		
+        		"Milk Tea",
+        		"Smoothies",
+        		"Soda");
+        Label IngrCost = new Label("Ingredient Type");
+        TextField Aa = new TextField();
+        VBoxAddOrd.getChildren().addAll(
+        		IngrName, 
+        		Da, 
+        		IngrType, 
+        		combobox, 
+        		IngrCost,
+        		Aa);
+        
+        ord_Addord.setTop(Text);
+        ord_Addord.setCenter(VBoxAddOrd);
+        
+        Scene OrdAddScene1 = new Scene(ord_Addord, 700, 700);
+		 window.setScene(OrdAddScene1);
+		 window.showAndWait();
+		
+	}
 }

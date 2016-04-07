@@ -5,8 +5,8 @@ public class DulceConnection {
 	public static void main(String[] args) {
 		try{
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			String url = "jdbc:sqlserver://http://em.uh.edu/CoT-CIS3365-07;databaseName=DulceDatabase;integratedSecurity=true";
-			String user ="COUGARNET\\lvnguye";
+			String url = "jdbc:sqlserver://localhost;databaseName=DulceDatabase;integratedSecurity=true";
+			String user ="";
 			String pass ="";
 			
 		
