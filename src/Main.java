@@ -17,37 +17,13 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.*;
 
 public class Main extends Application{
     Stage window;
 
     public static void main(String[] args){
-    	try{
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			String url = "jdbc:sqlserver://localhost:1433;databaseName=DulceDatabase;integratedSecurity=true";
-			String user ="";
-			String pass ="";
-			
-		
-			Connection conn = DriverManager.getConnection(url, user, pass);
-			Statement stmt = conn.createStatement();
-			String SQL = "SELECT * FROM City";
-			ResultSet rs = stmt.executeQuery(SQL);
-			rs.next();
-			String first = rs.getString("CityName");
-			System.out.println(first);
-			System.out.println("Connection Success, PARTY!");
-			
-			
-		}
-		catch(Exception exc){
-			System.out.println("You failed connection");
-		}
+    	
         launch(args);
     }
 
@@ -671,10 +647,9 @@ public class Main extends Application{
 
 }
 
-
-/******************* THIS SPOT IS RESERVERED FOR USEFUL JUNK ***********************/
 /*
-  centerMenu3.setPadding(new Insets(50, 40, 30, 30));
+/******************* THIS SPOT IS RESERVERED FOR USEFUL JUNK ***********************/
+  /*centerMenu3.setPadding(new Insets(50, 40, 30, 30));
         centerMenu3.setSpacing(10);
         ChoiceBox cb1 = new ChoiceBox();
         cb1.getItems().addAll("Smoothies", "Testing", "Is", "Fun", "But", "Smoothies", "Go", "Here");

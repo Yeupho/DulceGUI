@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 public class AddEmployee {
 	static ComboBox<String> combobox;
+	static ComboBox<String>	dankbox;
 	public static void display(){
 		
 		Stage window = new Stage();
@@ -40,11 +41,20 @@ public class AddEmployee {
 	        
 	     VBox OtherInfo = new VBox();
 	     OtherInfo.setPadding(new Insets(20,20,20,20));
-	        Label Location = new Label("Location");
+	        Label Location = new Label("Address");
 	        TextField Qa = new TextField();
+	        Label City = new Label("City");
+	        TextField Ca = new TextField();
+	        Label State = new Label("State");
+	        TextField Sa = new TextField();
+	        Label Zipcode = new Label("Zipcode");
+	        TextField Za = new TextField();
+	        Za.setMaxWidth(100);
 	        Label Role = new Label("Role");
 	        TextField Pa = new TextField();
-	        OtherInfo.getChildren().addAll(Location, Qa, Role, Pa);
+	        
+	        
+	        OtherInfo.getChildren().addAll(Location, Qa, City, Ca, State, Sa, Zipcode, Za, Role, Pa);
 	        emp_Addemp.setTop(Text);
 	        emp_Addemp.setLeft(VBoxAddEmp);
 	        emp_Addemp.setCenter(OtherInfo);
