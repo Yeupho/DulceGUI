@@ -29,7 +29,7 @@ public class ConfirmOrder {
         yes.setStyle("-fx-font: 16.5 arial; -fx-base: #FFC524");
         yes.setMinWidth(150);
         yes.setAlignment(Pos.CENTER);
-
+       
         Button no = new Button("No");
         no.setStyle("-fx-font: 16.5 arial; -fx-base: #FFC524");
         no.setMinWidth(150);

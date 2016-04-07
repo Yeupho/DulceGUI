@@ -22,12 +22,13 @@ public class ViewOrders {
 	static TableView<Products> table1;
 	public static void display(){
 		Stage window = new Stage();
-		window.setTitle("Add Employee");
+		window.setTitle("Orders");
 		window.initModality(Modality.APPLICATION_MODAL);
 		
 		
 		 
-		
+		Label OrderText = new Label("Orders");
+		OrderText.setStyle("-fx-font-size: 40px");
 		TableColumn<Products, String> nameColumn = new TableColumn<>("OrderName");
 		nameColumn.setMinWidth(30);
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -45,6 +46,7 @@ public class ViewOrders {
 		table1.getColumns().addAll(nameColumn,typeColumn,costColumn);
 		
 		BorderPane ord_ViewOrd = new BorderPane();
+		ord_ViewOrd.setTop(OrderText);
 		ord_ViewOrd.setCenter(table1);
 		 Scene OrdViewScene1 = new Scene(ord_ViewOrd, 700, 700);
 		 window.setScene(OrdViewScene1);

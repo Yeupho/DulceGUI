@@ -174,6 +174,7 @@ public class Main extends Application{
         MenuItem menFProp = new MenuItem("Properties");
         MenuItem menFLogout = new MenuItem("Log out");
         MenuItem menFexit = new MenuItem("Close");
+        menFexit.setOnAction(e-> window.close());
         menuFile.getItems().addAll(menFNew, menFRef, menFProp, menFLogout, menFexit);
         
         Menu menuAdd = new Menu("Add");
@@ -300,6 +301,7 @@ public class Main extends Application{
         ButtAddIngr.setMinSize(200, 100);
         ButtAddIngr.setMaxSize(200, 100);
         ButtAddIngr.setPadding(new Insets(30, 20 , 30, 20));
+        ButtAddIngr.setOnAction(e->AddEmployee.displayOrder());
         ButtAddIngr.setStyle(""
         		+ "-fx-font-size: 20px;"
         		+ "-fx-border-radius: 50; "
@@ -343,7 +345,7 @@ public class Main extends Application{
         ButtUpEmp.setMaxSize(200, 100);
         ButtUpEmp.setPadding(new Insets(30, 20 , 30, 20));
         ButtUpEmp.setStyle(""
-        		+ "-fx-font-size: 20px;"
+        		+ "-fx-font-size: 15px;"
         		+ "-fx-border-radius: 50; "
         		+ "-fx-background-radius: 50; "
         		+ "-fx-background-color: #DAA9B5");
