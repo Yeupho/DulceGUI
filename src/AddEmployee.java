@@ -115,10 +115,10 @@ public class AddEmployee {
 		 VBox VBoxAddOrd = new VBox();
 	     VBoxAddOrd.setPadding(new Insets(20,20,20,20));
 		 		 
-		Label Text = new Label("Add New Ingredient");
+		Label Text = new Label("Add New Location");
 		Text.setStyle("-fx-font-size: 40;");
 		Text.setPadding(new Insets(30,30,30,30));
-		Label IngrName = new Label("Ingredient Name");
+		Label IngrName = new Label("Location ID: " + "11W3GENR850M3T1NG");
         TextField Da = new TextField();
         
         Label IngrType = new Label("Ingredient Type");
