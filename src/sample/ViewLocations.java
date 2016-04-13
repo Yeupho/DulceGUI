@@ -1,32 +1,25 @@
 package sample;
 
-import javafx.application.Application;
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
-import javax.swing.*;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.*;
-
-public class ViewOrders {
+public class ViewLocations {
 	private static ObservableList<ObservableList> data;
 	private static TableView tableview;
 
@@ -89,19 +82,20 @@ public class ViewOrders {
 		}
 	}
 
-	public static void GeneralOrder() {
+	public static void GeneralLocation() {
 
-		String SQL = "SELECT * FROM ORDER ORDER BY DESC";
+		String SQL = "SELECT * FROM Location;";
 
-		String SQL2 = "SELECT Drink.DrinkName, DrinkType.TypeName, Drink.Cost " + "FROM Drink "
-				+ "FULL OUTER JOIN DrinkType ON Drink.DrinkTypeID = DrinkType.DrinkTypeID "
-				+ "ORDER BY DrinkType.TypeName;";
+		String SQL2 = "SELECT Employee.FirstName, Employee.LastName, HoursWorked.StartTime, HoursWorked.EndTime, DayofWeek.Day "
+				+ "FROM WeekSchedule " + "FULL OUTER JOIN Employee ON WeekSchedule.EmployeeID = Employee.EmployeeID "
+				+ "FULL OUTER JOIN HoursWorked ON WeekSchedule.ShiftID = HoursWorked.ShiftID "
+				+ "FULL OUTER JOIN DayofWeek ON WeekSchedule.DayID = DayofWeek.DayID; ";
 
 		Stage window = new Stage();
-		Label GeneralOrder = new Label("Order Reports");
+		Label GeneralEmps = new Label("Emplyoee Reports");
 		Label RandomInfo = new Label("Select one of the options to view in the left column");
-		Button ButtGenEmp = new Button("Latest Orders");
-		Button ButtEmpSchedule = new Button("View Ingredients");
+		Button ButtGenEmp = new Button("General Emplyoee Information");
+		Button ButtEmpSchedule = new Button("Employee Schedules");
 		Button ButtEmpSalary = new Button("Employee Salaries");
 
 		BorderPane layout = new BorderPane();
@@ -125,7 +119,7 @@ public class ViewOrders {
 		});
 		Left.getChildren().addAll(ButtGenEmp, ButtEmpSchedule, ButtEmpSalary);
 
-		layout.setTop(GeneralOrder);
+		layout.setTop(GeneralEmps);
 		layout.setLeft(Left);
 		layout.setCenter(CenterValue);
 		// Main Scene

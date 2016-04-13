@@ -1,6 +1,5 @@
 package sample;
 
-
 public class Products {
 	private int UID;
 	private String name;
@@ -14,42 +13,48 @@ public class Products {
 	private int LoginID;
 	private String login;
 	private String password;
-	public Products(int UID, String name, String Type, double cost ){
+
+	public Products(int UID, String name, String Type, double cost) {
 		this.UID = UID;
 		this.name = name;
 		this.Type = Type;
 		this.cost = cost;
-		
+
 	}
-	
-	//OrderID
-	public int getID(){
+
+	// OrderID
+	public int getID() {
 		return UID;
 	}
-	public void setID(int UID){
-		this.UID=UID; 
+
+	public void setID(int UID) {
+		this.UID = UID;
 	}
-	//Smoothie Name
-	public String getName(){
+
+	// Smoothie Name
+	public String getName() {
 		return name;
 	}
-	public void setName(String name){
+
+	public void setName(String name) {
 		this.name = name;
 	}
-	
-	//Smoothie Type
-	public String getType(){
+
+	// Smoothie Type
+	public String getType() {
 		return Type;
 	}
-	public void setType(String Type){
+
+	public void setType(String Type) {
 		this.Type = Type;
 	}
-	
-	//Smoothie Cost
-	public double getCost(){
+
+	// Smoothie Cost
+	public double getCost() {
 		return cost;
 	}
-	public void setCost(double Cost){
+
+	public void setCost(double Cost) {
 		this.cost = cost;
 	}
 
