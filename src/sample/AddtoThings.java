@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyProperty;
@@ -31,7 +33,8 @@ public class AddtoThings {
 
 	static ComboBox<String> combobox;
 	static ComboBox<String> dankbox;
-
+	static ComboBox<String> jukebox;
+	static ComboBox<String> takebox;
 	public static void display() {
 
 		Stage window = new Stage();
@@ -39,7 +42,7 @@ public class AddtoThings {
 		window.initModality(Modality.APPLICATION_MODAL);
 
 		BorderPane emp_Addemp = new BorderPane();
-		emp_Addemp.setStyle("-fx-background-color: D0B040");
+		emp_Addemp.setStyle("-fx-background-color: ffd773");
 		VBox VBoxAddEmp = new VBox();
 		VBoxAddEmp.setPadding(new Insets(20, 20, 20, 20));
 
@@ -68,7 +71,8 @@ public class AddtoThings {
 
 			// This creates a connection to the
 			Connection c = DBconnect.connect();
-			String SQL = "SELECT Location.Address FROM Location;";
+			String SQL = "SELECT Location.Address FROM Location "
+					+ " WHERE Address <> '---' ;";
 			ResultSet rs = c.createStatement().executeQuery(SQL);
 
 			/*
@@ -142,19 +146,23 @@ public class AddtoThings {
 			LocationID = 1 + dankbox.getSelectionModel().getSelectedIndex();
 			int RoleID;
 			RoleID = 1 + combobox.getSelectionModel().getSelectedIndex();
-
+			String Test = null;
+			
+			
 			if (Da.getText() != est && Ha.getText() != est && Ga.getText() != est) {
 				try {
 
 					Connection c1 = DBconnect.connect();
 					// c1 = DriverManager.getConnection(dbURL);
 					Statement stmt = c1.createStatement();
-
+					
+					
+					String dank = Test;
 					String AddEmp = "INSERT INTO Employee( FirstName, LastName, EmployeePhone, LocationID, RoleID) "
 							+ "VALUES ('" + Da.getText() + "' , '" + Ha.getText() + "', '" + Ga.getText() + "" + "','"
 							+ LocationID + "','" + RoleID + "')";
 					stmt.executeUpdate(AddEmp);
-
+					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -162,10 +170,17 @@ public class AddtoThings {
 			} else {
 				System.out.print("Nothing was executed.");
 			}
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			window.close();
 		});
 		Cancel.setOnAction(e -> {
 
-			System.out.println("Things");
+			window.close();
 		});
 		Scene EmpScene1 = new Scene(emp_Addemp, 600, 600);
 		window.setScene(EmpScene1);
@@ -195,6 +210,7 @@ public class AddtoThings {
 		window.setTitle("Add Ingredient");
 		window.initModality(Modality.APPLICATION_MODAL);
 		BorderPane ord_Addord = new BorderPane();
+		ord_Addord.setStyle("-fx-background-color: ffd773");
 		VBox VBoxAddOrd = new VBox();
 		VBoxAddOrd.setPadding(new Insets(20, 20, 20, 20));
 
@@ -221,7 +237,7 @@ public class AddtoThings {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		Label IngrCost = new Label("Cost: $");
+		Label IngrCost = new Label("Cost: ($0.00 to $1.99)");
 		TextField Aa = new TextField();
 		Aa.setMaxWidth(50);
 		VBoxAddOrd.getChildren().addAll(IngrName, Da, IngrType, combobox, IngrCost, Aa);
@@ -232,6 +248,8 @@ public class AddtoThings {
 		Cancel.setStyle("-fx-background-color: #ff6961; -fx-font-size: 16;");
 		Cancel.setPadding(new Insets(20, 20, 20, 20));
 		HBox BotPanel = new HBox();
+		BotPanel.setSpacing(20);
+		BotPanel.setPadding(new Insets(20, 20, 20, 20));
 		BotPanel.getChildren().addAll(Submit, Cancel);
 		ord_Addord.setTop(Text);
 		ord_Addord.setCenter(VBoxAddOrd);
@@ -259,13 +277,20 @@ public class AddtoThings {
 			} else {
 				System.out.print("Nothing was executed.");
 			}
+		
 		});
 		Cancel.setOnAction(e -> {
 
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			window.close();
 		});
 
-		Scene OrdAddScene1 = new Scene(ord_Addord, 500, 350);
+		Scene OrdAddScene1 = new Scene(ord_Addord, 500, 500);
 		window.setScene(OrdAddScene1);
 		window.showAndWait();
 
@@ -273,21 +298,40 @@ public class AddtoThings {
 
 	public static void displayLocation() {
 		Stage window = new Stage();
-		window.setTitle("Add Ingredient");
+		window.setTitle("Add Location");
 		window.initModality(Modality.APPLICATION_MODAL);
 		BorderPane ord_Addord = new BorderPane();
+		ord_Addord.setStyle("-fx-background-color: ffd773");
 		VBox VBoxAddOrd = new VBox();
 		VBoxAddOrd.setPadding(new Insets(20, 20, 20, 20));
 
 		Label Text = new Label("Add New Location");
 		Text.setStyle("-fx-font-size: 40;");
 		Text.setPadding(new Insets(30, 30, 30, 30));
-		Label LocID = new Label("Location ID: " + "11W3GENR850M3T1NG");
+		UUID u1 = UUID.randomUUID();
+		Label LocID = new Label("Building ID: " + u1);
 		Label space = new Label(" ");
 		Label LocAddress = new Label("Location Address");
 		TextField Da = new TextField();
+		Label MonRent = new Label("Monthly Rent");
+		TextField InMonRent = new TextField();
 		Label City = new Label("City");
 		TextField Ca = new TextField();
+		jukebox = new ComboBox<>();
+		try {
+			String ListCountry = null;
+
+			Connection c = DBconnect.connect();
+			String SQL = "SELECT CityName FROM City;";
+			ResultSet rs = c.createStatement().executeQuery(SQL);
+			while (rs.next()) {
+				ListCountry = rs.getString(1);
+				jukebox.getItems().add(ListCountry);
+			}
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 
 		Label Country = new Label("Country");
 		combobox = new ComboBox<>();
@@ -323,10 +367,27 @@ public class AddtoThings {
 			e2.printStackTrace();
 		}
 
-		Label IngrCost = new Label("Zipcode");
-		TextField Aa = new TextField();
-		VBoxAddOrd.getChildren().addAll(LocID, space, LocAddress, Da, City, Ca, Country, combobox, State, dankbox,
-				IngrCost, Aa);
+		Label LabZip = new Label("Zipcode");
+		TextField InZip = new TextField();
+		InZip.setMaxWidth(100);
+		Label LabBuildType = new Label("Building Type: ");
+		takebox = new ComboBox<>();
+		try {
+			String ListStates = null;
+
+			Connection c = DBconnect.connect();
+			String SQL = "SELECT TypeDesc FROM BuildingType;";
+			ResultSet rs = c.createStatement().executeQuery(SQL);
+			while (rs.next()) {
+				ListStates = rs.getString(1);
+				takebox.getItems().add(ListStates);
+			}
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		VBoxAddOrd.getChildren().addAll(LocID, space, LocAddress, Da, MonRent, InMonRent, City, jukebox, State, dankbox,Country, combobox,
+				LabZip, InZip, LabBuildType, takebox);
 
 		Button Submit = new Button("Submit");
 		Submit.setStyle("-fx-background-color: #77dd77; -fx-font-size: 16;");
@@ -336,6 +397,8 @@ public class AddtoThings {
 		Cancel.setPadding(new Insets(20, 20, 20, 20));
 
 		HBox BotPanel = new HBox();
+		BotPanel.setSpacing(20);
+		BotPanel.setPadding(new Insets(20, 20, 20, 20));
 		BotPanel.getChildren().addAll(Submit, Cancel);
 		ord_Addord.setTop(Text);
 		ord_Addord.setCenter(VBoxAddOrd);
@@ -343,17 +406,30 @@ public class AddtoThings {
 
 		Submit.setOnAction(e -> {
 			String est = null;
-
+			int x = 1+combobox.getSelectionModel().getSelectedIndex();
+			int y = 1+dankbox.getSelectionModel().getSelectedIndex();
+			int z = 1+jukebox.getSelectionModel().getSelectedIndex();
+			int w = 1+takebox.getSelectionModel().getSelectedIndex();
+			int k = Integer.parseInt(InZip.getText());
 			// Work in Progress
-			if (Da.getText() != est && combobox.getSelectionModel().getSelectedItem() != est && Aa.getText() != est) {
+			if (Da.getText() != est && Ca.getText() !=est && combobox.getSelectionModel().getSelectedItem() != est
+					&& InZip.getText() != est) {
 				try {
 
 					Connection c1 = DBconnect.connect();
 					// c1 = DriverManager.getConnection(dbURL);
 					Statement stmt = c1.createStatement();
-
-					String AddOrd = "INSERT INTO Location(Address, RentCost"
-							+ "CountryID, StateID, CityCode, Zipcode, TypeID) " + "VALUES ('" + Da.getText() + "')";
+					String ViewLoc = "SELECT Location.LocationID FROM Location;";
+					ResultSet rs = stmt.executeQuery(ViewLoc);
+					int Test = 0;
+					while (rs.next()){
+						Test = rs.getInt(1);
+					}
+					Test++;
+					
+					String AddOrd = "INSERT INTO Location(LocationID, BuildingName, Address, RentCost, CityCode, "
+							+ "CountryID, StateID, TypeID, ZipCodeID) " 
+							+ "VALUES ('" +Test+"','" +u1+"','" +Da.getText()+ "','"+InMonRent.getText()+"','"+z+"','" +x+ "','"+y+ "','"+w+"','"+k+"');";
 					stmt.executeUpdate(AddOrd);
 
 				} catch (SQLException e1) {
@@ -365,11 +441,16 @@ public class AddtoThings {
 			}
 		});
 		Cancel.setOnAction(e -> {
-
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			window.close();
 		});
 
-		Scene OrdAddScene1 = new Scene(ord_Addord, 500, 500);
+		Scene OrdAddScene1 = new Scene(ord_Addord, 500, 600);
 		window.setScene(OrdAddScene1);
 		window.showAndWait();
 

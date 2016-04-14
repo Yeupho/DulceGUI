@@ -71,7 +71,7 @@ public class Main extends Application {
 		 * ==================WINDOW DISPLAY================ This sets up the
 		 * scenes and shows the windows.
 		 */
-		Scene logMenu = new Scene(grid, 400, 400);
+		Scene logMenu = new Scene(grid, 450, 450);
 		window.setScene(logMenu);
 		window.show();
 
@@ -82,7 +82,7 @@ public class Main extends Application {
 		inception.setAlignment(Pos.CENTER);
 		inception.setStyle("-fx-background-color: #B09268");
 
-		Scene scene1 = new Scene(Anchor, 1360, 900);
+		Scene scene1 = new Scene(Anchor, 1200, 800);
 
 		/* ==================SCENE 2 - CUSTOMER SECOND PAGE================= */
 		BorderPane bordPane = new BorderPane();
@@ -121,7 +121,7 @@ public class Main extends Application {
 		smoothFlow.setPrefWrapLength(200);
 		smoothFlow.setStyle("-fx-font: 20 arial; -fx-base: #FFC524");
 
-		Scene scene3 = new Scene(bord3, 1360, 900);
+		Scene scene3 = new Scene(bord3, 1200, 800);
 
 		bord3.setTop(topMenu3);
 		bord3.setBottom(bottomMenu3);
@@ -144,7 +144,7 @@ public class Main extends Application {
 		exFlow.setPrefWrapLength(200);
 		exFlow.setStyle("-fx-font: 20 arial; -fx-base: #FFC524");
 
-		Scene scene4 = new Scene(bord4, 1360, 900);
+		Scene scene4 = new Scene(bord4, 1200, 800);
 
 		bord4.setTop(topMenu4);
 		bord4.setBottom(bottomMenu4);
@@ -410,7 +410,7 @@ public class Main extends Application {
 		empMenu1.setTop(menus);
 		empMenu1.setLeft(EmpLeftSet);
 		empMenu1.setCenter(EmpFlow);
-		Scene EmpScene = new Scene(empMenu1, 1100, 700);
+		Scene EmpScene = new Scene(empMenu1, 1000, 600);
 		/*
 		 * ==================================CONDITIONAL
 		 * LOGIN==============================================
@@ -492,7 +492,7 @@ public class Main extends Application {
 		inception.setAlignment(Pos.CENTER);
 		Anchor.setStyle("");
 
-		Scene scene2 = new Scene(bordPane, 1360, 900);
+		Scene scene2 = new Scene(bordPane, 1200, 800);
 		start.setOnAction(e -> window.setScene(scene2));
 
 		/*

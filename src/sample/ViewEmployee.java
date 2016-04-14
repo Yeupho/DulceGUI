@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -48,11 +50,11 @@ public class ViewEmployee {
 								return new SimpleStringProperty(param.getValue().get(j).toString());
 							}
 						});
-
+				
 				tableview.getColumns().addAll(col);
 				System.out.println("Column [" + i + "] ");
 			}
-
+			
 			/********************************
 			 * Data added to ObservableList *
 			 ********************************/
@@ -61,7 +63,7 @@ public class ViewEmployee {
 				ObservableList<String> row = FXCollections.observableArrayList();
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 					// Iterate Column
-					String notthere = "null";
+					String notthere = "---";
 					rs.getString(i);
 					if (rs.wasNull()) {
 						row.add(notthere);
@@ -84,23 +86,61 @@ public class ViewEmployee {
 	}
 
 	public static void GeneralEmplyoee() {
-
+		//View General Employee Information
 		String SQL = "SELECT Employee.FirstName, Employee.LastName, Role.RoleName, Location.Address " + "FROM Employee "
 				+ "FULL OUTER JOIN Role ON Employee.RoleID = Role.RoleID "
 				+ "FULL OUTER JOIN Location ON Employee.LocationID = Location.LocationID;";
-
-		String SQL2 = "SELECT Employee.FirstName, Employee.LastName, HoursWorked.StartTime, HoursWorked.EndTime, DayofWeek.Day "
-				+ "FROM WeekSchedule " + "FULL OUTER JOIN Employee ON WeekSchedule.EmployeeID = Employee.EmployeeID "
-				+ "FULL OUTER JOIN HoursWorked ON WeekSchedule.ShiftID = HoursWorked.ShiftID "
-				+ "FULL OUTER JOIN DayofWeek ON WeekSchedule.DayID = DayofWeek.DayID; ";
-
+		//View Employee Schedules
+		String SQL2 = "SELECT Employee.FirstName, Employee.LastName, HoursWorked.StartTime, HoursWorked.EndTime, DayofWeekz.[Day] "
+				+ " FROM WeekSchedule " 
+				+ " FULL OUTER JOIN Employee ON WeekSchedule.EmployeeID = Employee.EmployeeID "
+				+ " FULL OUTER JOIN HoursWorked ON WeekSchedule.ShiftID = HoursWorked.ShiftID "
+				+ " FULL OUTER JOIN DayofWeekz ON WeekSchedule.DayID = DayofWeekz.DayID"
+				+ " WHERE WeekSchedule.WeekSchedule IS NOT NULL; ";
+		//View Employee Salaries 
+		String SQL3 ="SELECT EmployeeFirstName, Employee.LastName, Salary.TotHoursWorked, HourRate.BasePay, Salary.Bonus, "
+				+ "PaymentType.TypeID, Salary.Notes "
+				+ "FROM Salary "
+				+ "FULL OUTER JOIN Employee ON Salary.EmployeeID = Employee.EmployeeID "
+				+ "FULL OUTER JOIN HourRate ON Salary.BaseRateID = HourRate.RateID"
+				+ "FULL OUTER JOIN PaymentType ON Salary.PaymentType = PaymentType.TypeID;";
+		//View Employee Bank Info
+		String SQL4 ="SELECT Employee.EmployeeID, Employee.FirstName, Employee.LastName, BankInfo.Bank, "
+				+ " BankInfo.AccountNumber, BankInfo.SavingsActNumber, BankInfo.RoutingNumber "
+				+ " FROM BankInfo "
+				+ " FULL OUTER JOIN Employee ON BankInfo.EmployeeID = Employee.EmployeeID;";
+		//View 
 		Stage window = new Stage();
 		Label GeneralEmps = new Label("Emplyoee Reports");
 		Label RandomInfo = new Label("Select one of the options to view in the left column");
-		Button ButtGenEmp = new Button("General Emplyoee Information");
+		Button ButtGenEmp = new Button("General Emplyoee\nInformation");
+		ButtGenEmp.setMinSize(150, 50);
+		ButtGenEmp.setMaxSize(100, 50);
+		ButtGenEmp.setStyle("" 
+				+ "-fx-font-size: 13px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #C06A45");
 		Button ButtEmpSchedule = new Button("Employee Schedules");
+		ButtEmpSchedule.setMinSize(150, 50);
+		ButtEmpSchedule.setMaxSize(100, 50);
+		ButtEmpSchedule.setStyle("" 
+				+ "-fx-font-size: 13px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #DAA9B5");
 		Button ButtEmpSalary = new Button("Employee Salaries");
-
+		ButtEmpSalary.setMinSize(150, 50);
+		ButtEmpSalary.setMaxSize(100, 50);
+		ButtEmpSalary.setStyle("" 
+				+ "-fx-font-size: 15px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #5EAE9E");
+		Button ButtEmpBank = new Button("Employee Bank Info");
+		ButtEmpBank.setMinSize(150, 50);
+		ButtEmpBank.setMaxSize(100, 50);
+		ButtEmpBank.setStyle("" 
+				+ "-fx-font-size: 13px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #63E9FC");
 		BorderPane layout = new BorderPane();
 		VBox Left = new VBox();
 		VBox CenterValue = new VBox();
@@ -108,6 +148,14 @@ public class ViewEmployee {
 		Scrolls.setContent(CenterValue);
 		CenterValue.getChildren().addAll(RandomInfo);
 
+		//CSS Main 
+				
+				window.setTitle("Update Locations");
+				window.initModality(Modality.APPLICATION_MODAL);
+				layout.setStyle("-fx-background-color: ffd773");
+				GeneralEmps.setStyle("-fx-font-size: 40;");
+				GeneralEmps.setPadding(new Insets(30, 30, 30, 30));
+		
 		ButtGenEmp.setOnAction(e -> {
 			tableview = new TableView();
 			buildData(SQL);
@@ -120,13 +168,31 @@ public class ViewEmployee {
 			CenterValue.getChildren().clear();
 			CenterValue.getChildren().addAll(tableview);
 		});
-		Left.getChildren().addAll(ButtGenEmp, ButtEmpSchedule, ButtEmpSalary);
+		ButtEmpSchedule.setOnAction(e -> {
+			tableview = new TableView();
+			buildData(SQL3);
+			CenterValue.getChildren().clear();
+			CenterValue.getChildren().addAll(tableview);
+		});
+		ButtEmpBank.setOnAction(e->{
+			tableview = new TableView();
+			buildData(SQL4);
+			CenterValue.getChildren().clear();
+			CenterValue.getChildren().addAll(tableview);
+		});
+		
+		Left.getChildren().addAll(ButtGenEmp, ButtEmpSchedule, ButtEmpSalary, ButtEmpBank);
 
+		VBox Right = new VBox();
+		Label Stuff = new Label("                 ");
+		Right.minWidth(100);
+		Right.getChildren().add(Stuff);
+		layout.setRight(Right);
 		layout.setTop(GeneralEmps);
 		layout.setLeft(Left);
 		layout.setCenter(CenterValue);
 		// Main Scene
-		Scene scene = new Scene(layout, 700, 400);
+		Scene scene = new Scene(layout, 900, 600);
 
 		window.setScene(scene);
 		window.show();
