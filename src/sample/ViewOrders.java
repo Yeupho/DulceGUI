@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -24,6 +26,7 @@ import javax.swing.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.time.Duration;
 import java.util.*;
 
 public class ViewOrders {
@@ -91,31 +94,32 @@ public class ViewOrders {
 
 	public static void GeneralOrder() {
 
-		String SQL = " SELECT OrderTable.OrderID, Drink.DrinkName, Ice.IceLevel, SugarLevel.AmountDesc, Size.SizeOptions, "
+		String SQL = " SELECT Ticket.TicketID, OrderTable.OrderID, Drink.DrinkName, Ice.IceLevel, SugarLevel.AmountDesc, Size.SizeOptions, "
 				+ " Temperature.TemperatureOption, Topping.ToppingName, TrantnOrder.Cost "
 				+ " FROM OrderTable"
-				+ " FULL OUTER JOIN Drink ON OrderTable.DrinkID = Drink.DrinkID "
-				+ " FULL OUTER JOIN Ice ON OrderTable.Ice = Ice.Ice "
-				+ " FULL OUTER JOIN SugarLevel ON OrderTable.Sugar = SugarLevel.LevelID"
-				+ " FULL OUTER JOIN Size ON OrderTable.Size = Size.Size "
-				+ " FULL OUTER JOIN Temperature ON OrderTable.Temperature = Temperature.Temperature "
-				+ " FULL OUTER JOIN Topping ON OrderTable.Topping = Topping.ToppingID "
-				+ " RIGHT OUTER JOIN TrantnOrder ON OrderTable.OrderID = TrantnOrder.OrderID"
+				+ " INNER JOIN Drink ON OrderTable.DrinkID = Drink.DrinkID "
+				+ " INNER JOIN Ice ON OrderTable.Ice = Ice.Ice "
+				+ " INNER JOIN SugarLevel ON OrderTable.Sugar = SugarLevel.LevelID"
+				+ " INNER JOIN Size ON OrderTable.Size = Size.Size "
+				+ " INNER JOIN Temperature ON OrderTable.Temperature = Temperature.Temperature "
+				+ " INNER JOIN Topping ON OrderTable.Topping = Topping.ToppingID "
+				+ " INNER JOIN TrantnOrder ON OrderTable.OrderID = TrantnOrder.OrderID"
+				+ " INNER JOIN Ticket ON TrantnOrder.TicketID = Ticket.TicketID"
 				+ " WHERE OrderTable.ORDERID IS NOT NULL"
-				+ " ORDER BY OrderTable.OrderID DESC;";
+				+ " ORDER BY Ticket.TicketID DESC;";
 
-		String SQL2 = "SELECT DrinkType.TypeName, Drink.DrinkName, Drink.Cost " + "FROM Drink "
+		String SQL2 = "SELECT DrinkType.TypeName, Drink.DrinkID, Drink.DrinkName, Drink.Cost " + "FROM Drink "
 				+ "FULL OUTER JOIN DrinkType ON Drink.DrinkTypeID = DrinkType.DrinkTypeID "
 				+ "ORDER BY DrinkType.TypeName;";
-		String SQL3 = "SELECT DrinkType.TypeName, Drink.DrinkName, OrderTable.OrderID, OrderTable.Size, OrderTable.Topping "
+		/*String SQL3 = "SELECT DrinkType.TypeName, Drink.DrinkName, OrderTable.OrderID, OrderTable.Size, OrderTable.Topping "
 				+ "FROM OrderTable "
 				+ "FULL OUTER JOIN Drink ON OrderTable.DrinkID = Drink.DrinkID "
-				+ "FULL OUTER JOIN DrinkType ON Drink.DrinkTypeID = DrinkType.DrinkTypeID; ";
+				+ "FULL OUTER JOIN DrinkType ON Drink.DrinkTypeID = DrinkType.DrinkTypeID; ";*/
 		
 		Stage window = new Stage();
 		Label GeneralOrder = new Label("Order Reports");
-		Label RandomInfo = new Label("Select one of the options to view in the left column");
-		
+		Label RandomInfo = new Label("<-Select one of the options to view in the left column");
+		RandomInfo.setStyle("-fx-font-size: 20;");
 		
 		
 		Button ButtGenOrd = new Button("Latest Orders");
@@ -132,13 +136,13 @@ public class ViewOrders {
 					+ "-fx-font-size: 15px;"  
 					+ "-fx-background-radius:100; "
 					+ "-fx-background-color: #DAA9B5");
-		Button ButtOrdType = new Button("Orders by Drinktype");
+		/*Button ButtOrdType = new Button("Orders by Drinktype");
 			ButtOrdType.setMinSize(150, 50);
 			ButtOrdType.setMaxSize(100, 50);
 			ButtOrdType.setStyle("" 
 					+ "-fx-font-size: 13px;"  
 					+ "-fx-background-radius:100; "
-					+ "-fx-background-color: #7096AE");
+					+ "-fx-background-color: #7096AE");*/
 
 		BorderPane layout = new BorderPane();
 		VBox Left = new VBox();
@@ -159,6 +163,7 @@ public class ViewOrders {
 		GeneralOrder.setPadding(new Insets(30, 30, 30, 30));
 		
 		ButtGenOrd.setOnAction(e -> {
+
 			tableview = new TableView();
 			buildData(SQL);
 			CenterValue.getChildren().clear();
@@ -170,19 +175,33 @@ public class ViewOrders {
 			CenterValue.getChildren().clear();
 			CenterValue.getChildren().addAll(tableview);
 		});
-		ButtOrdType.setOnAction(e -> {
+		/*ButtOrdType.setOnAction(e -> {
 			tableview = new TableView();
 			buildData(SQL3);
 			CenterValue.getChildren().clear();
 			CenterValue.getChildren().addAll(tableview);
-		});
-		Left.getChildren().addAll(ButtGenOrd, ButtViewIng, ButtOrdType);
-
+		});*/
+		Left.getChildren().addAll(ButtGenOrd, ButtViewIng);
+		
+		//CSS to set everything 
+		Left.setPadding(new Insets(0, 10, 0, 10));
+		HBox Bottom = new HBox();
+		Bottom.setPadding(new Insets(0, 10, 30, 30));
+		Button Close = new Button("Close");
+		Close.setOnAction(e-> window.close());
+		Close.setPrefWidth(100);
+		Close.setStyle("" 
+					+ "-fx-font-size: 20px;"
+					+ "-fx-background-radius:50; "
+					+ "-fx-background-color: #ff6961 ");
+		Bottom.getChildren().add(Close);
+		layout.setBottom(Bottom);
+		
 		layout.setTop(GeneralOrder);
 		layout.setLeft(Left);
 		layout.setCenter(CenterValue);
 		// Main Scene
-		Scene scene = new Scene(layout, 900, 600);
+		Scene scene = new Scene(layout, 1000, 600);
 
 		window.setScene(scene);
 		window.show();

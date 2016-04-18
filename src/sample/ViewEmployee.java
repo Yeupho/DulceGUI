@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.stage.Modality;
@@ -91,19 +92,22 @@ public class ViewEmployee {
 				+ "FULL OUTER JOIN Role ON Employee.RoleID = Role.RoleID "
 				+ "FULL OUTER JOIN Location ON Employee.LocationID = Location.LocationID;";
 		//View Employee Schedules
-		String SQL2 = "SELECT Employee.FirstName, Employee.LastName, HoursWorked.StartTime, HoursWorked.EndTime, DayofWeekz.[Day] "
+		String SQL2 = " SELECT Employee.EmployeeID, Employee.FirstName, Employee.LastName, HoursWorked.ShiftName,  "
+				+ " DayofWeekz.DayName, DayofWeekz.DayID "
 				+ " FROM WeekSchedule " 
-				+ " FULL OUTER JOIN Employee ON WeekSchedule.EmployeeID = Employee.EmployeeID "
-				+ " FULL OUTER JOIN HoursWorked ON WeekSchedule.ShiftID = HoursWorked.ShiftID "
-				+ " FULL OUTER JOIN DayofWeekz ON WeekSchedule.DayID = DayofWeekz.DayID"
-				+ " WHERE WeekSchedule.WeekSchedule IS NOT NULL; ";
+				+ " INNER JOIN Employee ON WeekSchedule.EmployeeID = Employee.EmployeeID "
+				+ " INNER JOIN HoursWorked ON WeekSchedule.ShiftID = HoursWorked.ShiftID "
+				+ " INNER JOIN DayofWeekz ON WeekSchedule.DayID = DayofWeekz.DayID "
+				+ " WHERE WeekSchedule.WeekSchedule IS NOT NULL "
+				+ " ORDER BY DayofWeekz.DayID ASC ; ";
 		//View Employee Salaries 
-		String SQL3 ="SELECT EmployeeFirstName, Employee.LastName, Salary.TotHoursWorked, HourRate.BasePay, Salary.Bonus, "
-				+ "PaymentType.TypeID, Salary.Notes "
-				+ "FROM Salary "
-				+ "FULL OUTER JOIN Employee ON Salary.EmployeeID = Employee.EmployeeID "
-				+ "FULL OUTER JOIN HourRate ON Salary.BaseRateID = HourRate.RateID"
-				+ "FULL OUTER JOIN PaymentType ON Salary.PaymentType = PaymentType.TypeID;";
+		String SQL3 ="SELECT Employee.FirstName, Employee.LastName, EmployeeSchedule.TotHrsWorked, HourRate.BasePay, Payroll.Bonus, "
+				+ "PaymentType.TypeID, Payroll.Notes "
+				+ "FROM Payroll "
+				+ "FULL OUTER JOIN Employee ON Payroll.EmployeeID = Employee.EmployeeID "
+				+ "FULL OUTER JOIN HourRate ON Payroll.BaseRateID = HourRate.RateID "
+				+ "FULL OUTER JOIN PaymentType ON Payroll.PaymentType = PaymentType.TypeID "
+				+ "FULL OUTER JOIN EmployeeSchedule ON Payroll.ScheduleID = EmployeeSchedule.ScheduleID ";
 		//View Employee Bank Info
 		String SQL4 ="SELECT Employee.EmployeeID, Employee.FirstName, Employee.LastName, BankInfo.Bank, "
 				+ " BankInfo.AccountNumber, BankInfo.SavingsActNumber, BankInfo.RoutingNumber "
@@ -111,8 +115,10 @@ public class ViewEmployee {
 				+ " FULL OUTER JOIN Employee ON BankInfo.EmployeeID = Employee.EmployeeID;";
 		//View 
 		Stage window = new Stage();
-		Label GeneralEmps = new Label("Emplyoee Reports");
-		Label RandomInfo = new Label("Select one of the options to view in the left column");
+		Label GeneralEmps = new Label("Employee Reports");
+		Label RandomInfo = new Label("<-Select one of the options to view in the left column");
+		RandomInfo.setStyle("-fx-font-size: 20;");
+		
 		Button ButtGenEmp = new Button("General Emplyoee\nInformation");
 		ButtGenEmp.setMinSize(150, 50);
 		ButtGenEmp.setMaxSize(100, 50);
@@ -168,7 +174,7 @@ public class ViewEmployee {
 			CenterValue.getChildren().clear();
 			CenterValue.getChildren().addAll(tableview);
 		});
-		ButtEmpSchedule.setOnAction(e -> {
+		ButtEmpSalary.setOnAction(e -> {
 			tableview = new TableView();
 			buildData(SQL3);
 			CenterValue.getChildren().clear();
@@ -187,6 +193,21 @@ public class ViewEmployee {
 		Label Stuff = new Label("                 ");
 		Right.minWidth(100);
 		Right.getChildren().add(Stuff);
+		
+		//CSS to set everything 
+				Left.setPadding(new Insets(0, 10, 0, 10));
+				HBox Bottom = new HBox();
+				Bottom.setPadding(new Insets(0, 10, 30, 30));
+				Button Close = new Button("Close");
+				Close.setOnAction(e-> window.close());
+				Close.setPrefWidth(100);
+				Close.setStyle("" 
+							+ "-fx-font-size: 20px;"
+							+ "-fx-background-radius:50; "
+							+ "-fx-background-color: #ff6961 ");
+				Bottom.getChildren().add(Close);
+				layout.setBottom(Bottom);
+		
 		layout.setRight(Right);
 		layout.setTop(GeneralEmps);
 		layout.setLeft(Left);

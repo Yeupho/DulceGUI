@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -30,11 +31,20 @@ public class AddtoThings {
 	// "com.microsoft.sqlserver.jdbc.SQLServerDriver()";
 	// static final String dbURL =
 	// "jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=DulceDatabase;integratedSecurity=true;";
-
+/*Scenes are separated into 3 different methods
+ * -First Method: Displays scene to add Employee
+ * -Second Method: Displays scene to Add Order
+ * -Third Method: Displays scene to Add Location*/
+	
+	//These are comboboxes that are used to create dropdown box with a list of specified objects
+	//retried from the database. 
 	static ComboBox<String> combobox;
 	static ComboBox<String> dankbox;
 	static ComboBox<String> jukebox;
 	static ComboBox<String> takebox;
+	
+	/*===================First Scene ========================
+	 * Add employees*/
 	public static void display() {
 
 		Stage window = new Stage();
@@ -120,6 +130,7 @@ public class AddtoThings {
 		DatePicker SelectDate = new DatePicker();
 		SelectDate.setOnAction(e -> {
 			LocalDate date = SelectDate.getValue();
+			System.out.println(date);
 		});
 		Label Notes = new Label("Notes about new Employee");
 		TextField inNotes = new TextField();
@@ -155,12 +166,18 @@ public class AddtoThings {
 					Connection c1 = DBconnect.connect();
 					// c1 = DriverManager.getConnection(dbURL);
 					Statement stmt = c1.createStatement();
-					
+					String ViewEmp = "SELECT Employee.EmployeeID FROM Employee;";
+					ResultSet rs = stmt.executeQuery(ViewEmp);
+					int Test1 = 0;
+					while (rs.next()){
+						Test1 = rs.getInt(1);
+					}
+					Test1++;
 					
 					String dank = Test;
-					String AddEmp = "INSERT INTO Employee( FirstName, LastName, EmployeePhone, LocationID, RoleID) "
-							+ "VALUES ('" + Da.getText() + "' , '" + Ha.getText() + "', '" + Ga.getText() + "" + "','"
-							+ LocationID + "','" + RoleID + "')";
+					String AddEmp = "INSERT INTO Employee( EmployeeID, FirstName, LastName, EmployeePhone, LocationID, RoleID, Notes) "
+							+ "VALUES ('"+Test1+ "', '" + Da.getText() + "' , '" + Ha.getText() + "', '" + Ga.getText() + "" + "','"
+							+ LocationID + "','" + RoleID + "','"+inNotes.getText()+"')";
 					stmt.executeUpdate(AddEmp);
 					
 				} catch (SQLException e1) {
@@ -277,7 +294,7 @@ public class AddtoThings {
 			} else {
 				System.out.print("Nothing was executed.");
 			}
-		
+			window.close();
 		});
 		Cancel.setOnAction(e -> {
 
@@ -297,6 +314,7 @@ public class AddtoThings {
 	}
 
 	public static void displayLocation() {
+		//Some scene building stuff
 		Stage window = new Stage();
 		window.setTitle("Add Location");
 		window.initModality(Modality.APPLICATION_MODAL);
@@ -308,8 +326,10 @@ public class AddtoThings {
 		Label Text = new Label("Add New Location");
 		Text.setStyle("-fx-font-size: 40;");
 		Text.setPadding(new Insets(30, 30, 30, 30));
-		UUID u1 = UUID.randomUUID();
-		Label LocID = new Label("Building ID: " + u1);
+		String test = randomWord(8);
+		test.toUpperCase();
+		Label LocID = new Label("Building ID: " + test);
+		
 		Label space = new Label(" ");
 		Label LocAddress = new Label("Location Address");
 		TextField Da = new TextField();
@@ -429,7 +449,7 @@ public class AddtoThings {
 					
 					String AddOrd = "INSERT INTO Location(LocationID, BuildingName, Address, RentCost, CityCode, "
 							+ "CountryID, StateID, TypeID, ZipCodeID) " 
-							+ "VALUES ('" +Test+"','" +u1+"','" +Da.getText()+ "','"+InMonRent.getText()+"','"+z+"','" +x+ "','"+y+ "','"+w+"','"+k+"');";
+							+ "VALUES ('" +Test+"','" +test+"','" +Da.getText()+ "','"+InMonRent.getText()+"','"+z+"','" +x+ "','"+y+ "','"+w+"','"+k+"');";
 					stmt.executeUpdate(AddOrd);
 
 				} catch (SQLException e1) {
@@ -439,6 +459,7 @@ public class AddtoThings {
 			} else {
 				System.out.print("Nothing was executed.");
 			}
+			window.close();
 		});
 		Cancel.setOnAction(e -> {
 			try {
@@ -449,11 +470,26 @@ public class AddtoThings {
 			}
 			window.close();
 		});
-
+		//set the stage
 		Scene OrdAddScene1 = new Scene(ord_Addord, 500, 600);
 		window.setScene(OrdAddScene1);
 		window.showAndWait();
 
+	}
+	
+	
+	
+	public static String randomWord(int length) {
+	    Random random = new Random();
+	    StringBuilder word = new StringBuilder(length);
+	    for (int i = 0; i < length; i++) {
+	        word.append((char)('a' + random.nextInt(26)));
+	    }
+	  
+	    word.toString();
+	    	    
+	    return word.toString();
+	    
 	}
 
 }

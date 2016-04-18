@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,13 +16,16 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class ViewLocations {
+public class ViewReports {
 	private static ObservableList<ObservableList> data;
 	private static TableView tableview;
 
@@ -83,8 +87,119 @@ public class ViewLocations {
 			System.out.println("Error on Building Data");
 		}
 	}
+	public static void ReportDisplay(){
+		
+		/*String SQL = "SELECT Location.LocationID, Location.Address, Location.RentCost, Country.CountryName, "
+				+ "State.StateName, City.CityName, BuildingType.TypeDesc "
+				+ "FROM Location "
+				+ "FULL OUTER JOIN Country ON Location.CountryID = Country.CountryID "
+				+ "FULL OUTER JOIN State ON Location.StateID = State.StateID "
+				+ "FULL OUTER JOIN City ON Location.CityCode = City.CityCode "
+				+ "FULL OUTER JOIN BuildingType ON Location.TypeID = BuildingType.TypeID "
+				+ "  WHERE Address <> '---' ;";*/
+		String SQL = " SELECT Ticket.TicketID, Ticket.TicketDate, OrderTable.OrderID, Drink.DrinkName, Ice.IceLevel, SugarLevel.AmountDesc, Size.SizeOptions, "
+				+ " Temperature.TemperatureOption, Topping.ToppingName, TrantnOrder.Cost "
+				+ " FROM OrderTable"
+				+ " FULL OUTER JOIN Drink ON OrderTable.DrinkID = Drink.DrinkID "
+				+ " FULL OUTER JOIN Ice ON OrderTable.Ice = Ice.Ice "
+				+ " FULL OUTER JOIN SugarLevel ON OrderTable.Sugar = SugarLevel.LevelID"
+				+ " FULL OUTER JOIN Size ON OrderTable.Size = Size.Size "
+				+ " FULL OUTER JOIN Temperature ON OrderTable.Temperature = Temperature.Temperature "
+				+ " FULL OUTER JOIN Topping ON OrderTable.Topping = Topping.ToppingID "
+				+ " RIGHT OUTER JOIN TrantnOrder ON OrderTable.OrderID = TrantnOrder.OrderID"
+				+ " RIGHT OUTER JOIN Ticket ON TrantnOrder.TicketID = Ticket.TicketID"
+				+ "  ";
+		
+		Stage window = new Stage();
+		
+		HBox TopBox = new HBox();
+		Label GeneralLocs = new Label("Location Reports");
+		GeneralLocs.setStyle("-fx-font-size: 40;");
+		GeneralLocs.setPadding(new Insets(30, 30, 30, 30));
+		
+		BorderPane layout = new BorderPane();
+		layout.setStyle("-fx-background-color: #B09268");
+		
+		
+		
+		HBox CenterValue = new HBox();
+		CenterValue.setSpacing(20);
+		ScrollPane Scrolls = new ScrollPane();
+		Scrolls.setContent(CenterValue);
+		
+		Button ButtGenTick = new Button("Ticket Sales\n& Purchases");
+		Button ButtEmpRep = new Button("Employee\nReport");
+		Button ButtLocRep = new Button("Location\nReports");
+		CenterValue.getChildren().addAll(ButtGenTick,ButtEmpRep,ButtLocRep);
+		CenterValue.setAlignment(Pos.TOP_CENTER);
+		//CSS for Buttons
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(10.0);
+		dropShadow.setOffsetX(10.0);
+		dropShadow.setOffsetY(10.0);
+		dropShadow.setColor(Color.color(0.2, 0.2, 0.2));
+		
+		ButtGenTick.setEffect(dropShadow);
+		ButtGenTick.setOnAction(e->{ BuildReports.BuildRep("Ticket Report", SQL);});
+		ButtGenTick.setMinSize(200, 200);
+		ButtGenTick.setMaxSize(100, 150);
+		ButtGenTick.setStyle("" 
+				+ "-fx-font-size: 25;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #C06A45");
+		ButtEmpRep.setEffect(dropShadow);
+		ButtEmpRep.setPadding(new Insets(0, 30, 0, 30));
+		ButtEmpRep.setMinSize(200, 200);
+		ButtEmpRep.setMaxSize(100, 150);
+		ButtEmpRep.setStyle("" 
+				+ "-fx-font-size: 25;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #B96F6F");
+		ButtLocRep.setEffect(dropShadow);
+		ButtLocRep.setMinSize(200, 200);
+		ButtLocRep.setMaxSize(100, 150);
+		ButtLocRep.setStyle("" 
+				+ "-fx-font-size: 25;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #C98A4B");
+		
+		Button Close = new Button("Close");
+		Close.setOnAction(e-> window.close());
+		Close.setPrefWidth(100);
+		Close.setStyle("" 
+					+ "-fx-font-size: 20px;"
+					+ "-fx-background-radius:50; "
+					+ "-fx-background-color: #ff6961 ");
+		Close.setAlignment(Pos.TOP_RIGHT);
+		TopBox.getChildren().addAll(GeneralLocs, Close);
+		
+		
+		layout.setTop(TopBox);
+		layout.setCenter(CenterValue);
+		Scene scene = new Scene(layout, 950, 600);
 
-	public static void GeneralLocation() {
+		window.setScene(scene);
+		window.show();
+		
+		
+		/*=====================================================================*/
+		BorderPane Ticklayout = new BorderPane();
+		Label LabTick = new Label("Ticket Sales Reports");
+		Scene SceneTicket = new Scene(Ticklayout, 950, 600);
+		
+		
+		/*=====================================================================*/
+		BorderPane EmpLayout = new BorderPane();
+		
+		Scene SceneEmp = new Scene(EmpLayout, 950, 600);
+		
+		
+		
+		
+		
+		
+	}
+	public static void GeneralReps() {
 
 		String SQL = "SELECT Location.LocationID, Location.Address, Location.RentCost, Country.CountryName, "
 				+ "State.StateName, City.CityName, BuildingType.TypeDesc "
@@ -104,7 +219,8 @@ public class ViewLocations {
 
 		Stage window = new Stage();
 		Label GeneralLocs = new Label("Location Reports");
-		Label RandomInfo = new Label("Select one of the options to view in the left column");
+		Label RandomInfo = new Label("<-Select one of the options to view in the left column");
+		RandomInfo.setStyle("-fx-font-size: 20;");
 		
 		Button ButtGenEmp = new Button("General Location \nInformation");
 		ButtGenEmp.setMinSize(150, 50);
@@ -161,6 +277,21 @@ public class ViewLocations {
 		Label Stuff = new Label("                 ");
 		Right.minWidth(100);
 		Right.getChildren().add(Stuff);
+		
+		//CSS to set everything 
+				Left.setPadding(new Insets(0, 10, 0, 10));
+				HBox Bottom = new HBox();
+				Bottom.setPadding(new Insets(0, 10, 30, 30));
+				Button Close = new Button("Close");
+				Close.setOnAction(e-> window.close());
+				Close.setPrefWidth(100);
+				Close.setStyle("" 
+							+ "-fx-font-size: 20px;"
+							+ "-fx-background-radius:50; "
+							+ "-fx-background-color: #ff6961 ");
+				Bottom.getChildren().add(Close);
+				layout.setBottom(Bottom);
+		
 		layout.setRight(Right);
 		layout.setTop(GeneralLocs);
 		layout.setLeft(Left);
