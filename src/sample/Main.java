@@ -5,8 +5,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -17,6 +19,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main extends Application{
@@ -35,8 +39,7 @@ public class Main extends Application{
     String cart;
     ArrayList<String> cart1 = new ArrayList<>();
     ObservableList<String> cartItems = FXCollections.observableArrayList(cart1);
-
-
+    
     public static void main(String[] args){
         launch(args);
     }
@@ -292,13 +295,11 @@ public class Main extends Application{
 		menus.setStyle("-fx-background-color: #b78345;" + "-fx-font-size:30;" + "-fx-stroke: black;"
 				+ "-fx-stroke-width: 3;" + "-fx-text-fill: white;");
 		Menu menuFile = new Menu("File");
-		MenuItem menFNew = new MenuItem("New...");
-		MenuItem menFRef = new MenuItem("Refresh");
-		MenuItem menFProp = new MenuItem("Properties");
+
 		MenuItem menFLogout = new MenuItem("Log out");
 		MenuItem menFexit = new MenuItem("Close");
 		menFexit.setOnAction(e -> window.close());
-		menuFile.getItems().addAll(menFNew, menFRef, menFProp, menFLogout, menFexit);
+		menuFile.getItems().addAll(menFLogout, menFexit);
 
 		Menu menuAdd = new Menu("Add");
 		MenuItem menAItems = new MenuItem("Menu Item");
@@ -311,20 +312,34 @@ public class Main extends Application{
 		menALocation.setOnAction(e -> AddtoThings.displayLocation());
 		menFLogout.setOnAction(e -> window.setScene(logMenu));
 
+		Menu menuEdit = new Menu("Edit");
+		MenuItem menEemp = new MenuItem("Update Employee");
+		MenuItem menEing = new MenuItem("Edit/Remove Ingredient");
+		MenuItem menEloc = new MenuItem("Edit/Remove Location");
+		menuEdit.getItems().addAll(menEemp,menEing,menEloc);
+		
 		Menu menuView = new Menu("View");
 		MenuItem menVOrd = new MenuItem("Order Reports");
-		MenuItem menVEmp = new MenuItem("Emplyoee Reports");
+		MenuItem menVEmp = new MenuItem("Employee Reports");
+		MenuItem menVLoc = new MenuItem("Location Reports");
+		MenuItem menVRep = new MenuItem("All Reports");
+		
 		menVOrd.setOnAction(e -> ViewOrders.GeneralOrder());
 		menVEmp.setOnAction(e -> ViewEmployee.GeneralEmplyoee());
-		menuView.getItems().addAll(menVOrd, menVEmp);
-		menuView.getItems().add(new MenuItem("Employee Reports"));
-		menuView.getItems().add(new MenuItem("Location Reports"));
+		menVLoc.setOnAction(e -> ViewReports.GeneralReps());
+		menVRep.setOnAction(e -> ViewReports.ReportDisplay());
+		menuView.getItems().addAll(menVOrd, menVEmp, menVLoc, menVRep);
+		
+		
 
 		Menu menuHelp = new Menu("Help");
-		menuHelp.getItems().add(new MenuItem("About Team Solar"));
-		menuHelp.getItems().add(new MenuItem("Documentation"));
-		menuHelp.getItems().add(new MenuItem());
-		menus.getMenus().addAll(menuFile, menuAdd, menuView, menuHelp);
+		MenuItem menAbout = new MenuItem("About Team Solar");
+		menAbout.setOnAction(e-> About.display("About Team Solar"));
+		MenuItem menDoc = new MenuItem("Documentation");
+		menDoc.setOnAction(e-> Doc.display("Documentation"));
+		menuHelp.getItems().addAll(menAbout, menDoc);
+		
+		menus.getMenus().addAll(menuFile, menuAdd, menuEdit, menuView, menuHelp);
 
 
 		/*
@@ -829,8 +844,11 @@ public class Main extends Application{
 
         //Top Menu Items
         Label l4 = new Label("Add Extra Ingredients?");
-        l4.setPadding(new Insets(30, 30, 30, 30));
-        l4.setStyle("-fx-font: 35 arial; -fx-base: #FFC524");
+       
+        l4.setPadding(new Insets(30, 30, 100, 30));
+        l4.setStyle("-fx-font: 35 arial; -fx-base: #FFC524; "
+        		+ " -fx-background-image: url('Toppings.png')");
+       
         topMenu4.getChildren().addAll(l4);
 
         buildCart(f);
@@ -1169,9 +1187,9 @@ public class Main extends Application{
 
 
     }
+ 
 
-
-
+    
 
     private void buildCart(ListView<String> c1){
         c1.setStyle("-fx-font: 13 arial; -fx-base: #FFC524");

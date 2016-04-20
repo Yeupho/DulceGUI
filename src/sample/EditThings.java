@@ -3,6 +3,7 @@ package sample;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -15,7 +16,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -133,10 +136,32 @@ public class EditThings {
 		VBox LeftSide = new VBox();
 		Button ButtEmpGenInfo = new Button("Employee Info");
 		Button ButtEmpSched = new Button("Update Employee\nSchedule");
-		Button ButtEmpBankInfo = new Button("Employee Bank\nInformation");
-		Button ButtEmpSalary = new Button("Employee Salary");
-		Button ButtDelEmp = new Button("Remove Employee");
-		LeftSide.getChildren().addAll(ButtEmpGenInfo, ButtEmpSched, ButtEmpBankInfo, ButtEmpSalary, ButtDelEmp);
+		LeftSide.setPadding(new Insets(10,10,10,10));
+		
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(5.0);
+		dropShadow.setOffsetX(3.0);
+		dropShadow.setOffsetY(3.0);
+		dropShadow.setColor(Color.color(0.3, 0.3, 0.3));
+		
+		ButtEmpGenInfo.setEffect(dropShadow);
+		ButtEmpGenInfo.setMinSize(150, 50);
+		ButtEmpGenInfo.setMaxSize(100, 50);
+		ButtEmpGenInfo.setStyle("" 
+				+ "-fx-font-size: 13px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #96cafd ");
+		ButtEmpSched.setEffect(dropShadow);
+		ButtEmpSched.setMinSize(150, 50);
+		ButtEmpSched.setMaxSize(100, 50);
+		ButtEmpSched.setStyle("" 
+				+ "-fx-font-size: 13px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #9696fd");
+		
+		
+		
+		LeftSide.getChildren().addAll(ButtEmpGenInfo, ButtEmpSched);
 
 		// Set Sections
 		Main.setTop(TopText);
@@ -296,7 +321,7 @@ public class EditThings {
 			
 		});
 		/* =================Button Employee Account======================== */
-		ButtEmpBankInfo.setOnAction(e -> {
+		/*ButtEmpBankInfo.setOnAction(e -> {
 			SelectEm.getChildren().clear();
 			CenterValue.getChildren().clear();
 			dankbox = new ComboBox<>();
@@ -319,7 +344,7 @@ public class EditThings {
 				 * rs.getString(1) means the second column (java starts count at
 				 * 0) gets put into the Address String. -dankbox (ComboBox) adds
 				 * the Address string to its list.
-				 */
+				 *//*
 				String Name = null;
 				while (rs.next()) {
 					Name = rs.getString(1) + " " + rs.getString(2);
@@ -335,7 +360,7 @@ public class EditThings {
 			SelectEm.getChildren().addAll(dankbox, Update, Commit);
 			CenterValue.getChildren().add(SelectEm);
 
-		});
+		}); */
 		
 		
 		/*===========Update Employee Schedules ===============*/
@@ -383,6 +408,7 @@ public class EditThings {
 			CenterValue.getChildren().add(SelectEm);
 			
 			Update.setOnAction(a-> {
+				CenterValue.getChildren().clear();
 				int Test = dankbox.getSelectionModel().getSelectedIndex();
 				Test++;
 				String SQL1 = "SELECT WeekSchedule.Date, DayofWeekz.DayName, HoursWorked.ShiftName "
@@ -393,13 +419,86 @@ public class EditThings {
 						+ "WHERE Employee.EmployeeID = "+Test+" "
 						+ "ORDER BY WeekSchedule.Date DESC; ";
 				tableview = new TableView();
-						
 				buildData(SQL1);
-				CenterValue.getChildren().clear();
-				CenterValue.getChildren().addAll(SelectEm, tableview);
+				DatePicker StartDate = new DatePicker();
+				junkbox = new ComboBox<>();
+				combobox = new ComboBox<>();
+				
+				try{
+					Connection c = DBconnect.connect();
+					String SQL = "SELECT * FROM DayofWeekz ";
+					ResultSet rs = c.createStatement().executeQuery(SQL);
+
+					/*
+					 * This loop goes through the column Address in Location table.
+					 * -rs.next goes to the next iteration of the row; -Address =
+					 * rs.getString(1) means the second column (java starts count at
+					 * 0) gets put into the Address String. -dankbox (ComboBox) adds
+					 * the Address string to its list.
+					 */
+					String Name = null;
+					while (rs.next()) {
+						Name = rs.getString(1) + " " + rs.getString(2);
+						junkbox.getItems().add(Name);
+				}}
+				catch (SQLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}				
+				try{
+					Connection c = DBconnect.connect();
+					String SQL = "SELECT * FROM HoursWorked ";
+					ResultSet rs = c.createStatement().executeQuery(SQL);
+
+					/*
+					 * This loop goes through the column Address in Location table.
+					 * -rs.next goes to the next iteration of the row; -Address =
+					 * rs.getString(1) means the second column (java starts count at
+					 * 0) gets put into the Address String. -dankbox (ComboBox) adds
+					 * the Address string to its list.
+					 */
+					String Name = null;
+					while (rs.next()) {
+						Name = rs.getString(1) + " " + rs.getString(2);
+						combobox.getItems().add(Name);
+				}}
+				catch (SQLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				Button AddSched = new Button("Add");
+				CenterValue.getChildren().addAll(SelectEm, tableview, StartDate, junkbox, combobox, AddSched);
+				AddSched.setOnAction(b->{
+					try{
+						Label ChangeCon1 = new Label("*Change has been comitted.");
+						ChangeCon1.setStyle("-fx-text-fill: red;");
+						CenterValue.getChildren().add(ChangeCon1);
+						int Test1 = dankbox.getSelectionModel().getSelectedIndex();
+						int Test3 = combobox.getSelectionModel().getSelectedIndex();
+						int Test2 = junkbox.getSelectionModel().getSelectedIndex();
+						Test1++;
+						Test2++;
+						Test3++;
+						LocalDate date = StartDate.getValue();
+						Connection c = DBconnect.connect();
+						String SQL = "INSERT INTO WeekSchedule "
+								+ "(EmployeeID, DayHoursWorked, Date, ShiftID, DayID) "
+								+ "VALUES ("+Test1+ ", 4,'"+date+"',"+Test2+","+Test3+") ";
+						ResultSet rs=  c.createStatement().executeQuery(SQL);
+
+						System.out.println(rs.getString(1));
+						System.out.println(SQL);
+						
+						}
+					catch (SQLException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+						
+					}
+				});
 			});
 		});
-		Scene layout = new Scene(Main, 1000, 600);
+		Scene layout = new Scene(Main, 600, 600);
 		window.setScene(layout);
 		window.showAndWait();
 
@@ -468,7 +567,29 @@ public class EditThings {
 		Button ButtOrdGenInfo = new Button("Update Order");
 		Button ButtDelORder = new Button("Remove Ingredient");
 		LeftSide.getChildren().addAll(ButtOrdGenInfo, ButtDelORder);
+		LeftSide.setPadding(new Insets(10,10,10,10));
 
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(5.0);
+		dropShadow.setOffsetX(3.0);
+		dropShadow.setOffsetY(3.0);
+		dropShadow.setColor(Color.color(0.3, 0.3, 0.3));
+		
+		ButtOrdGenInfo.setEffect(dropShadow);
+		ButtOrdGenInfo.setMinSize(150, 50);
+		ButtOrdGenInfo.setMaxSize(100, 50);
+		ButtOrdGenInfo.setStyle("" 
+				+ "-fx-font-size: 13px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #96cafd ");
+		ButtDelORder.setEffect(dropShadow);
+		ButtDelORder.setMinSize(150, 50);
+		ButtDelORder.setMaxSize(100, 50);
+		ButtDelORder.setStyle("" 
+				+ "-fx-font-size: 13px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #9696fd");
+		
 		// Set Sections
 		Main.setTop(TopText);
 		Main.setLeft(LeftSide);
@@ -603,7 +724,28 @@ public class EditThings {
 		Button ButtLocGenInfo = new Button("Update Location");
 		Button ButtDelLoc = new Button("Remove Location");
 		LeftSide.getChildren().addAll(ButtLocGenInfo,ButtDelLoc);
-
+		LeftSide.setPadding(new Insets(10,10,10,10));
+		
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(5.0);
+		dropShadow.setOffsetX(3.0);
+		dropShadow.setOffsetY(3.0);
+		dropShadow.setColor(Color.color(0.3, 0.3, 0.3));
+		
+		ButtLocGenInfo.setEffect(dropShadow);
+		ButtLocGenInfo.setMinSize(150, 50);
+		ButtLocGenInfo.setMaxSize(100, 50);
+		ButtLocGenInfo.setStyle("" 
+				+ "-fx-font-size: 13px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #96cafd ");
+		ButtDelLoc.setEffect(dropShadow);
+		ButtDelLoc.setMinSize(150, 50);
+		ButtDelLoc.setMaxSize(100, 50);
+		ButtDelLoc.setStyle("" 
+				+ "-fx-font-size: 13px;"  
+				+ "-fx-background-radius:100; "
+				+ "-fx-background-color: #9696fd");
 		// Set Sections
 		Main.setTop(TopText);
 		Main.setLeft(LeftSide);
@@ -752,6 +894,9 @@ public class EditThings {
 							+ " SET Address = '---' "
 							+ " WHERE LocationID = "+Test+ " ;";
 					c.createStatement().executeUpdate(SQL);
+					Label ChangeCon = new Label("*Change has been comitted.");
+					ChangeCon.setStyle("-fx-text-fill: red;");
+					CenterValue.getChildren().add(ChangeCon);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class DBconnect {
 
 	private static Connection conn;
-	private static String url = "jdbc:sqlserver://localhost\\SQLExpress;databaseName=DulceDatabase;integratedSecurity=true;";
+	private static String url = "jdbc:sqlserver://localhost;databaseName=DulceDatabase;integratedSecurity=true;";
 
 	public static Connection connect() throws SQLException {
 		try {

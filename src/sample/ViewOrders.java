@@ -15,7 +15,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -121,15 +123,22 @@ public class ViewOrders {
 		Label RandomInfo = new Label("<-Select one of the options to view in the left column");
 		RandomInfo.setStyle("-fx-font-size: 20;");
 		
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(5.0);
+		dropShadow.setOffsetX(3.0);
+		dropShadow.setOffsetY(3.0);
+		dropShadow.setColor(Color.color(0.3, 0.3, 0.3));
 		
 		Button ButtGenOrd = new Button("Latest Orders");
+			ButtGenOrd.setEffect(dropShadow);
 			ButtGenOrd.setMinSize(150, 50);
 			ButtGenOrd.setMaxSize(100, 50);
 			ButtGenOrd.setStyle("" 
 					+ "-fx-font-size: 15px;"  
 					+ "-fx-background-radius:100; "
-					+ "-fx-background-color: #AFE197");
+					+ "-fx-background-color: #FFC524");
 		Button ButtViewIng = new Button("View Ingredients");
+			ButtViewIng.setEffect(dropShadow);
 			ButtViewIng.setMinSize(150, 50);
 			ButtViewIng.setMaxSize(100, 50);
 			ButtViewIng.setStyle("" 
@@ -158,12 +167,13 @@ public class ViewOrders {
 		//CSS Main 
 		window.setTitle("Update Locations");
 		window.initModality(Modality.APPLICATION_MODAL);
-		layout.setStyle("-fx-background-color: ffd773");
-		GeneralOrder.setStyle("-fx-font-size: 40;");
+		layout.setStyle("-fx-background-color: #7096AE;");
+		GeneralOrder.setStyle("-fx-font-size: 40;"
+				+ "-fx-text-fill: white;");
 		GeneralOrder.setPadding(new Insets(30, 30, 30, 30));
 		
+		
 		ButtGenOrd.setOnAction(e -> {
-
 			tableview = new TableView();
 			buildData(SQL);
 			CenterValue.getChildren().clear();
@@ -189,6 +199,7 @@ public class ViewOrders {
 		Bottom.setPadding(new Insets(0, 10, 30, 30));
 		Button Close = new Button("Close");
 		Close.setOnAction(e-> window.close());
+		Close.setEffect(dropShadow);
 		Close.setPrefWidth(100);
 		Close.setStyle("" 
 					+ "-fx-font-size: 20px;"

@@ -18,7 +18,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.effect.DropShadow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -88,9 +90,11 @@ public class ViewEmployee {
 
 	public static void GeneralEmplyoee() {
 		//View General Employee Information
-		String SQL = "SELECT Employee.FirstName, Employee.LastName, Role.RoleName, Location.Address " + "FROM Employee "
-				+ "FULL OUTER JOIN Role ON Employee.RoleID = Role.RoleID "
-				+ "FULL OUTER JOIN Location ON Employee.LocationID = Location.LocationID;";
+		String SQL = "SELECT Employee.FirstName, Employee.LastName, Role.RoleName, Location.Address, City.CityName " 
+				+ "FROM Employee "
+				+ "INNER JOIN Role ON Employee.RoleID = Role.RoleID "
+				+ "INNER JOIN Location ON Employee.LocationID = Location.LocationID "
+				+ "INNER JOIN City ON Location.CityCode = City.CityCode ";
 		//View Employee Schedules
 		String SQL2 = " SELECT Employee.EmployeeID, Employee.FirstName, Employee.LastName, HoursWorked.ShiftName,  "
 				+ " DayofWeekz.DayName, DayofWeekz.DayID "
@@ -110,16 +114,25 @@ public class ViewEmployee {
 				+ "FULL OUTER JOIN EmployeeSchedule ON Payroll.ScheduleID = EmployeeSchedule.ScheduleID ";
 		//View Employee Bank Info
 		String SQL4 ="SELECT Employee.EmployeeID, Employee.FirstName, Employee.LastName, BankInfo.Bank, "
-				+ " BankInfo.AccountNumber, BankInfo.SavingsActNumber, BankInfo.RoutingNumber "
+				+ " BankInfo.AccountNumber, BankInfo.SavingsActNumber, BankInfo.RoutingNumber, HourRate.BasePay "
 				+ " FROM BankInfo "
-				+ " FULL OUTER JOIN Employee ON BankInfo.EmployeeID = Employee.EmployeeID;";
+				+ " FULL OUTER JOIN Employee ON BankInfo.EmployeeID = Employee.EmployeeID "
+				+ " INNER JOIN Payroll ON Payroll.EmployeeID = Employee.EmployeeID "
+				+ " INNER JOIN HourRate ON Payroll.BaseRateID = HourRate.RateID ";
 		//View 
 		Stage window = new Stage();
-		Label GeneralEmps = new Label("Employee Reports");
+		Label GeneralEmps = new Label("Employee Information");
 		Label RandomInfo = new Label("<-Select one of the options to view in the left column");
 		RandomInfo.setStyle("-fx-font-size: 20;");
 		
+		
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setRadius(5.0);
+		dropShadow.setOffsetX(3.0);
+		dropShadow.setOffsetY(3.0);
+		dropShadow.setColor(Color.color(0.3, 0.3, 0.3));
 		Button ButtGenEmp = new Button("General Emplyoee\nInformation");
+		ButtGenEmp.setEffect(dropShadow);
 		ButtGenEmp.setMinSize(150, 50);
 		ButtGenEmp.setMaxSize(100, 50);
 		ButtGenEmp.setStyle("" 
@@ -127,6 +140,7 @@ public class ViewEmployee {
 				+ "-fx-background-radius:100; "
 				+ "-fx-background-color: #C06A45");
 		Button ButtEmpSchedule = new Button("Employee Schedules");
+		ButtEmpSchedule.setEffect(dropShadow);
 		ButtEmpSchedule.setMinSize(150, 50);
 		ButtEmpSchedule.setMaxSize(100, 50);
 		ButtEmpSchedule.setStyle("" 
@@ -134,6 +148,7 @@ public class ViewEmployee {
 				+ "-fx-background-radius:100; "
 				+ "-fx-background-color: #DAA9B5");
 		Button ButtEmpSalary = new Button("Employee Salaries");
+		ButtEmpSalary.setEffect(dropShadow);
 		ButtEmpSalary.setMinSize(150, 50);
 		ButtEmpSalary.setMaxSize(100, 50);
 		ButtEmpSalary.setStyle("" 
@@ -141,6 +156,7 @@ public class ViewEmployee {
 				+ "-fx-background-radius:100; "
 				+ "-fx-background-color: #5EAE9E");
 		Button ButtEmpBank = new Button("Employee Bank Info");
+		ButtEmpBank.setEffect(dropShadow);
 		ButtEmpBank.setMinSize(150, 50);
 		ButtEmpBank.setMaxSize(100, 50);
 		ButtEmpBank.setStyle("" 
@@ -158,7 +174,7 @@ public class ViewEmployee {
 				
 				window.setTitle("Update Locations");
 				window.initModality(Modality.APPLICATION_MODAL);
-				layout.setStyle("-fx-background-color: ffd773");
+				layout.setStyle("-fx-background-color: B09268");
 				GeneralEmps.setStyle("-fx-font-size: 40;");
 				GeneralEmps.setPadding(new Insets(30, 30, 30, 30));
 		
@@ -200,6 +216,7 @@ public class ViewEmployee {
 				Bottom.setPadding(new Insets(0, 10, 30, 30));
 				Button Close = new Button("Close");
 				Close.setOnAction(e-> window.close());
+				Close.setEffect(dropShadow);
 				Close.setPrefWidth(100);
 				Close.setStyle("" 
 							+ "-fx-font-size: 20px;"
